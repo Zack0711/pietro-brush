@@ -13,12 +13,32 @@ const readImage = file => new Promise((resolve, reject) => {
 
 const ImageInput = (props) => {
   const imageInputElRef = useRef(null)
+
+  const imageElRef = useRef(null)
+  const canvasElRef = useRef(null)
+
   const [imgString, setImgString] = useState('')
 
   const handleImgSelect = async (e) => {
     const base64String = await readImage(imageInputElRef.current.files[0])
     setImgString(base64String)
-    //console.log(base64String)
+
+    const ctx = canvasElRef.current.getContext('2d')
+    const img = new Image()
+
+    img.onload = () => {
+      const {
+        width,
+        height
+      } = img
+
+      const imgWidth = width > height ? height : width
+      ctx.drawImage(img, 0, 0, imgWidth, imgWidth, 0, 0, 64, 64)
+      console.log(ctx.getImageData(0, 0, 64, 64))
+    }
+
+    img.src = base64String
+    console.log(ctx)
   }
 
   return (
@@ -32,11 +52,8 @@ const ImageInput = (props) => {
           onChange={handleImgSelect}
         />
       </div>
-      {
-        imgString && (
-          <img src={imgString} />
-        )
-      }
+      <img ref={imageElRef} src={imgString} />
+      <canvas width="64" height="64" ref={canvasElRef} />
     </div>
   )
 }
