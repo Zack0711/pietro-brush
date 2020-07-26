@@ -1,30 +1,8 @@
 @import '../../mixin'
 
-.admin
-  padding 40px
-  max-width 1024px
-  margin 0 auto 
-  
-  &__publish-btn
-    padding 0 40px
-    
-  &__log-info
-    padding 24px
-    max-height 80vh
-    overflow-y auto
-  
-  &__single-log
-    display flex
-    align-items center
-  
-  &__log-time
-    padding 0 8px
-    color $dark_grey
-    font-style italic
-    flex-shrink 0
- 
-   &__log-type
-    padding 0 8px
-    color blue
-    flex-shrink 0
- 
+.row
+  $display-flex()
+
+.input-img
+  max-height 320px
+  max-width 320px

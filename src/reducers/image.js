@@ -1,0 +1,81 @@
+import {
+  UPDATE_PATTERN,
+  UPDATE_PALETTE,
+  UPDATE_ACTIVE_INDEX,
+  UPDATE_DATA_AND_LIST,
+} from '../actions'
+
+import { genArray } from '../utils/tools'
+
+const DEFAULT_STATE = {
+  activeIndex: -1,
+  list: [0],
+  data: {
+    0: {
+      x: 0,
+      y: 0,
+      pattern: genArray(1024),
+      palette: [16,24,32,40,48,56,64,72,80,88,96,104,112,120,128,136],
+    },
+  }
+}
+
+export default function reducer(state = DEFAULT_STATE, action) {
+  switch (action.type) {
+    case UPDATE_PATTERN:
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          [state.activeIndex]: {
+            ...state.data[state.activeIndex],
+            pattern: action.pattern,
+          }
+        },
+      }
+
+    case UPDATE_PALETTE: 
+      const palette = [...state.data[state.activeIndex].palette]
+      const { paletteIndex, colorIndex } = action
+
+      const currentPaletteIndex = palette.indexOf(colorIndex)
+
+      if (currentPaletteIndex > -1 && currentPaletteIndex !== paletteIndex) {
+        palette[currentPaletteIndex] = palette[paletteIndex]
+      }
+      palette[paletteIndex] = colorIndex
+
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          [state.activeIndex]: {
+            ...state.data[state.activeIndex],
+            palette,
+          }
+        },
+      }
+
+    case UPDATE_ACTIVE_INDEX:
+      return {
+        ...state,
+        activeIndex: action.index
+      }
+
+    case UPDATE_DATA_AND_LIST:
+      const {
+        data,
+        list,
+      } = action
+
+      return {
+        ...state,
+        activeIndex: -1,
+        list,
+        data,  
+      }
+
+    default:
+      return state
+  }
+}
