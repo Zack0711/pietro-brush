@@ -7,7 +7,7 @@ import './fontello.css'
 
 const FONT_STYLE = {
   qrcode: 'icon-qrcode',
-  pencil: 'icon-pencil',
+  pen: 'icon-pencil',
   folder: 'icon-folder',
   picture: 'icon-picture',
   palette: 'icon-palette',
@@ -17,7 +17,7 @@ const FONT_STYLE = {
   'bucket-all': 'icon-bucket-all',
   'mirror-horizontal': 'icon-mirror-horizontal',
   'mirror-vertical': 'icon-mirror-vertical',
-  'mirror-4': 'icon-mirror-4',
+  'mirror-corner': 'icon-mirror-corner',
   rect: 'icon-rect',
   ellipse: 'icon-ellipse',
   line: 'icon-line',

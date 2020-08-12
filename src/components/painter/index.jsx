@@ -4,15 +4,17 @@ import PropTypes from 'prop-types'
 import classNames from 'classnames'
 
 import Button from '@material-ui/core/Button'
+import Menu from '@material-ui/core/Menu'
+import MenuItem from '@material-ui/core/MenuItem'
 
-import FormatColorFillIcon from '@material-ui/icons/FormatColorFill'
-import OpenWithIcon from '@material-ui/icons/OpenWith'
-import CreateIcon from '@material-ui/icons/Create'
+import { IconFont } from '../icons'
+import Selector from '../selector'
 
 import Pattern from './pattern'
 import Palette from './palette'
+import StampSelector from './stamp-selector'
 import ColorPalette from './color-palette'
-import { IconFont } from '../icons'
+import IconLabel from './icon-label'
 
 import {
   updatePattern,
@@ -40,6 +42,28 @@ const ZOOM = 8
 let pixelsArray = []
 let previeArray = genArray(1024)
 
+const TOOLS = [
+  { label: 'pen', key: 'pen', val: 'pen', icon: 'pen' },
+  { label: 'bucket', key: 'bucket', val: 'bucket', icon: 'bucket'  },
+  { label: 'stamp', key: 'stamp', val: 'stamp', icon: 'stamp'  },
+  { label: 'ellipse', key: 'ellipse', val: 'ellipse', icon: 'ellipse'  },
+  { label: 'rect', key: 'rect', val: 'rect', icon: 'rect'  },
+  { label: 'line', key: 'line', val: 'line', icon: 'line'  },
+  { label: 'move', key: 'move', val: 'move', icon: 'move'  },
+]
+
+const MIRROR_OPTIONS = [
+  { label: 'mirror-0', key: 'mirror-0', val: 0, icon: 'mirror-horizontal' },
+  { label: 'mirror-1', key: 'mirror-1', val: 1, icon: 'mirror-horizontal' },
+  { label: 'mirror-2', key: 'mirror-2', val: 2, icon: 'mirror-vertical' },
+  { label: 'mirror-3', key: 'mirror-3', val: 3, icon: 'mirror-corner' },
+]
+
+const STAMP_OPTIONS = [
+  { label: 'star', key: 'star', val: 'star', icon: 'star-m', sizes: ['s', 'm', 'l'] },
+  { label: 'heart', key: 'heart', val: 'heart', icon: 'heart-m', sizes: ['s', 'm', 'l'] },
+]
+
 const PREVIEW_TOOL = {
   tool: 1,
   ellipse: 1,
@@ -65,9 +89,9 @@ const Painter = props => {
 
   const [paletteIndex, setPaletteIndex] = useState(0)
   const [isMouseDown, setIsMouseDown] = useState(false)
-  const [tool, setTool] = useState('pen')
   const [stamp, setStamp] = useState({size: 'm', type: 'star'})
-  const [mirror, setMirror] = useState(0)
+  const [tool, setTool] = useState(TOOLS[0].val)
+  const [mirror, setMirror] = useState(MIRROR_OPTIONS[0])
 
   const stretcherRef = useRef(null)
   const activeIndexRef = useRef(null)
@@ -98,7 +122,7 @@ const Painter = props => {
 
   const penDraw = (x, y, paletteIndex) => {
     const coordinates = [{ x, y }]
-    switch(mirror) {
+    switch(mirror.val) {
       case 1:
         coordinates.push({x: 31 - x, y,})
         break
@@ -352,90 +376,57 @@ const Painter = props => {
 
   return (
     <div className="painter">
-      <div className="painter__tool">
-        <Button
-          variant={tool === 'pen' ? 'contained' : 'outlined'}
-          onClick={() => setTool('pen')}
+      <div className="painter__stretcher-wrap">
+        <div 
+          className="painter__stretcher"
+          onMouseDown={handleMouseDown}
+          onMouseUp={handleMouseUp}
+          onMouseMove={handleMouseMove}
+          ref={stretcherRef}
         >
-          <IconFont style="pencil" />
-        </Button>
-        <Button
-          variant={tool === 'bucket' ? 'contained' : 'outlined'}
-          onClick={() => setTool('bucket')}
-        >
-          <IconFont style="bucket" />
-        </Button>
-        <Button
-          variant={tool === 'move' ? 'contained' : 'outlined'}
-          onClick={() => setTool('move')}
-        >
-          <IconFont style="move" />
-        </Button>
-        <Button
-          variant={tool === 'line' ? 'contained' : 'outlined'}
-          onClick={() => setTool('line')}
-        >
-          <IconFont style="line" />
-        </Button>
-        <Button
-          variant={tool === 'ellipse' ? 'contained' : 'outlined'}
-          onClick={() => setTool('ellipse')}
-        >
-          <IconFont style="ellipse" />
-        </Button>
-        <Button
-          variant={tool === 'rect' ? 'contained' : 'outlined'}
-          onClick={() => setTool('rect')}
-        >
-          <IconFont style="rect" />
-        </Button>
-        <Button
-          variant={tool === 'stamp' ? 'contained' : 'outlined'}
-          onClick={() => setTool('stamp')}
-        >
-          <IconFont style="stamp" />
-        </Button>
-        {`Tool: ${tool}`}
-        <button onClick={() => setMirror(0)}>0</button>
-        <button onClick={() => setMirror(1)}>1</button>
-        <button onClick={() => setMirror(2)}>2</button>
-        <button onClick={() => setMirror(3)}>3</button>
-        {`Mirror: ${mirror}`}
+          <Pattern
+            zoom={ZOOM}
+            hoverCallBack={onPatternHover}
+          />
+          {
+            ( tool !== 'line' && activeIndex > -1 ) && (
+              <div 
+                className="painter__indicator"
+                style={{
+                  top: `${indicatorPos.y * ZOOM}px`,
+                  left: `${indicatorPos.x * ZOOM}px`,
+                  width: `${ZOOM}px`,
+                  height: `${ZOOM}px`,
+                  backgroundColor: `${colors[palette[paletteIndex]][0]}`,
+                }}
+              />
+            )
+          }
+        </div>
       </div>
-      <div 
-        className="painter__stretcher"
-        onMouseDown={handleMouseDown}
-        onMouseUp={handleMouseUp}
-        onMouseMove={handleMouseMove}
-        ref={stretcherRef}
-      >
-        <Pattern
-          zoom={ZOOM}
-          hoverCallBack={onPatternHover}
+      <div className="painter__tool">
+        <Selector 
+          options={TOOLS}
+          onChange={ item => setTool(item.val) }
+          selectedLabel={(<IconFont style={tool} />)}
+          itemRender={ item => (<IconLabel icon={item.icon} label={item.label} />) }
         />
         {
-          ( tool !== 'line' && activeIndex > -1 ) && (
-            <div 
-              className="painter__indicator"
-              style={{
-                top: `${indicatorPos.y * ZOOM}px`,
-                left: `${indicatorPos.x * ZOOM}px`,
-                width: `${ZOOM}px`,
-                height: `${ZOOM}px`,
-                backgroundColor: `${colors[palette[paletteIndex]][0]}`,
-              }}
+          tool === 'stamp' && (
+            <StampSelector
+              options={STAMP_OPTIONS}
+              selectedStamp={stamp}
+              onStampChange={(type) => setStamp({...stamp, type})}
+              onSizeChange={(size) => setStamp({...stamp, size})}
             />
           )
         }
-      </div>
-      <div className="painter__tool">
-        <button onClick={() => setStamp({...stamp, type: 'star'})}>Star</button>
-        <button onClick={() => setStamp({...stamp, type: 'heart'})}>Heart</button>
-        {`Type: ${stamp.type}`}
-        <button onClick={() => setStamp({...stamp, size: 's'})}>S</button>
-        <button onClick={() => setStamp({...stamp, size: 'm'})}>M</button>
-        <button onClick={() => setStamp({...stamp, size: 'l'})}>L</button>
-        {`Size: ${stamp.size}`}
+        <Selector 
+          options={MIRROR_OPTIONS}
+          onChange={ item => setMirror(item) }
+          selectedLabel={(<IconFont style={mirror.icon} />)}
+          itemRender={ item => (<IconLabel icon={item.icon} label={item.label} />) }
+        />
       </div>
       {
         activeIndex > -1 && (

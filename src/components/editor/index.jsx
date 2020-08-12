@@ -18,10 +18,8 @@ const Editor = props => {
 
   return (
     <div className="editor">
-      <ImageConverter />
       <Previewer />
       <Painter />
-      <QrGenerator />
     </div>
   )
 }
