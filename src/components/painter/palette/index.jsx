@@ -3,6 +3,8 @@ import { useSelector, useDispatch } from 'react-redux'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 
+import { IconFont } from '../../icons'
+
 import { getActivePalette } from '../../../selectors/image'
 import { colors } from '../../../utils/color'
 
@@ -22,6 +24,8 @@ const Palette = ({ pickupColor, paletteIndex }) => {
 
   return (
     <div className="palette">
+      <IconFont style="palette" />
+      <div className="palette__color-wrap">
       {
         palette.map((colorIndex, i) => (
           <div 
@@ -34,6 +38,7 @@ const Palette = ({ pickupColor, paletteIndex }) => {
           />
         ))
       }
+      </div>
     </div>
   )
 }

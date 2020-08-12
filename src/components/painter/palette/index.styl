@@ -3,13 +3,17 @@
 .palette
   flex-wrap wrap
   $display-flex()
+  
+  &__color-wrap
+    flex-basis calc( 100% - 48px )
+    flex-wrap wrap
+    $display-flex()
 
   &__color-block
     cursor pointer
     border 1px solid transparent
-    width 16px
+    width 32px
     height 16px
-    margin 2px
     
     &--active
       border-color #666
