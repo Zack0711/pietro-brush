@@ -3,13 +3,23 @@ import { useSelector, useDispatch } from 'react-redux'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 
+import Button from '@material-ui/core/Button'
+
+import FormatColorFillIcon from '@material-ui/icons/FormatColorFill'
+import OpenWithIcon from '@material-ui/icons/OpenWith'
+import CreateIcon from '@material-ui/icons/Create'
+
+import Pattern from './pattern'
+import Palette from './palette'
+import ColorPalette from './color-palette'
+import { IconFont } from '../icons'
+
 import {
   updatePattern,
 } from '../../actions/image'
 
 import { 
   getActiveIndex,
-  getActiveData,
   getActivePalette,
   getActivePattern,
 } from '../../selectors/image'
@@ -22,10 +32,6 @@ import {
   drawSticker,
   genArray,
 } from '../../utils/tools'
-
-import Pattern from './pattern'
-import Palette from './palette'
-import ColorPalette from './color-palette'
 
 import './index.styl'
 
@@ -52,7 +58,6 @@ const Painter = props => {
   const palette = useSelector(getActivePalette)
   const pattern = useSelector(getActivePattern)
 
-  const imageData = useSelector(getActiveData)
   const activeIndex = useSelector(getActiveIndex)
 
   const [indicatorPos, setIndicatorPos] = useState({ x: 0, y: 0 })
@@ -348,13 +353,48 @@ const Painter = props => {
   return (
     <div className="painter">
       <div className="painter__tool">
-        <button onClick={() => setTool('pen')}>Pen</button>
-        <button onClick={() => setTool('bucket')}>Bucket</button>
-        <button onClick={() => setTool('move')}>Move</button>
-        <button onClick={() => setTool('line')}>Line</button>
-        <button onClick={() => setTool('ellipse')}>Ellipse</button>
-        <button onClick={() => setTool('rect')}>Rect</button>
-        <button onClick={() => setTool('stamp')}>Stamp</button>
+        <Button
+          variant={tool === 'pen' ? 'contained' : 'outlined'}
+          onClick={() => setTool('pen')}
+        >
+          <IconFont style="pencil" />
+        </Button>
+        <Button
+          variant={tool === 'bucket' ? 'contained' : 'outlined'}
+          onClick={() => setTool('bucket')}
+        >
+          <IconFont style="bucket" />
+        </Button>
+        <Button
+          variant={tool === 'move' ? 'contained' : 'outlined'}
+          onClick={() => setTool('move')}
+        >
+          <IconFont style="move" />
+        </Button>
+        <Button
+          variant={tool === 'line' ? 'contained' : 'outlined'}
+          onClick={() => setTool('line')}
+        >
+          <IconFont style="line" />
+        </Button>
+        <Button
+          variant={tool === 'ellipse' ? 'contained' : 'outlined'}
+          onClick={() => setTool('ellipse')}
+        >
+          <IconFont style="ellipse" />
+        </Button>
+        <Button
+          variant={tool === 'rect' ? 'contained' : 'outlined'}
+          onClick={() => setTool('rect')}
+        >
+          <IconFont style="rect" />
+        </Button>
+        <Button
+          variant={tool === 'stamp' ? 'contained' : 'outlined'}
+          onClick={() => setTool('stamp')}
+        >
+          <IconFont style="stamp" />
+        </Button>
         {`Tool: ${tool}`}
         <button onClick={() => setMirror(0)}>0</button>
         <button onClick={() => setMirror(1)}>1</button>

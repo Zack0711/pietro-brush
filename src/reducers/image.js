@@ -3,12 +3,18 @@ import {
   UPDATE_PALETTE,
   UPDATE_ACTIVE_INDEX,
   UPDATE_DATA_AND_LIST,
+  UPDATE_TITLE,
+  UPDATE_AUTHOR,
+  UPDATE_TOWN,
 } from '../actions'
 
 import { genArray } from '../utils/tools'
 
 const DEFAULT_STATE = {
   activeIndex: -1,
+  title: '',
+  author: '',
+  town: '',
   list: [0],
   data: {
     0: {
@@ -29,7 +35,7 @@ export default function reducer(state = DEFAULT_STATE, action) {
           ...state.data,
           [state.activeIndex]: {
             ...state.data[state.activeIndex],
-            pattern: action.pattern,
+            pattern: [...action.pattern],
           }
         },
       }
@@ -73,6 +79,24 @@ export default function reducer(state = DEFAULT_STATE, action) {
         activeIndex: -1,
         list,
         data,  
+      }
+
+    case UPDATE_TITLE:
+      return {
+        ...state,
+        title: action.title,
+      }
+
+    case UPDATE_AUTHOR:
+      return {
+        ...state,
+        author: action.author,
+      }
+
+    case UPDATE_TOWN:
+      return {
+        ...state,
+        town: action.town,
       }
 
     default:

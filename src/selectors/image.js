@@ -23,3 +23,9 @@ export const getActivePattern = state => {
   const activeIndex = getActiveIndex(state)
   return get(state, `image.data.${activeIndex}.pattern`)
 }
+
+export const getTitle = state => get(state, `image.title`)
+
+export const getAuthor = state => get(state, `image.author`)
+
+export const getTown = state => get(state, `image.town`)

@@ -8,8 +8,12 @@ import Cropper from 'cropperjs'
 
 import Button from '@material-ui/core/Button'
 
-import InputIcon from '@material-ui/icons/Input'
-import ImageIcon from '@material-ui/icons/Image'
+import Select from '@material-ui/core/Select'
+import MenuItem from '@material-ui/core/MenuItem'
+import InputLabel from '@material-ui/core/InputLabel'
+import FormControl from '@material-ui/core/FormControl'
+
+import { IconFont } from '../icons'
 
 import { updateDataAndList } from '../../actions'
 
@@ -33,6 +37,8 @@ const ImageConverter = props => {
 
   const [imgObj, setImgObj] = useState(null)
   const [imgSize, setImgSize] = useState({ width: 100, height: 100})
+  const [col, setCol] = useState(2)
+  const [row, setRow] = useState(2)
 
   const handleImgSelect = async (e) => {
     const img = await loadImage(inputElRef.current.files[0])
@@ -43,29 +49,36 @@ const ImageConverter = props => {
     const {
       list,
       data,
-    } = imageQuantize(cropperRef.current.getCroppedCanvas(), 2, 2)
+    } = imageQuantize(cropperRef.current.getCroppedCanvas(), row, col)
     dispatch(updateDataAndList(list, data))
+  }
+
+  const setImgCropper = () => {
+    if (cropperRef.current) {
+      cropperRef.current.destroy()
+      cropperRef.current = null
+    }
+
+    cropperRef.current = new Cropper(imageElRef.current, {
+      aspectRatio: row / col,
+      viewMode: 1,
+    })    
   }
 
   useEffect(() => {
     if(imgObj){
-      if (cropperRef.current) {
-        cropperRef.current.destroy()
-        cropperRef.current = null
-      }
-
-      cropperRef.current = new Cropper(imageElRef.current, {
-        aspectRatio: 2 / 2,
-        viewMode: 1,
-      })
+      setImgCropper()
     }
   },[imgObj])
 
+  useEffect(() => {
+    if(imgObj){
+      setImgCropper()
+    }
+  },[col, row])
+
   return (
     <div className="image-converter">
-      <div className="image-converter__preview">
-        <img className="image-converter__input-img" ref={imageElRef} src={imgObj && imgObj.src} />
-      </div>
       <div className="image-converter__tool">
         <label>
           <input
@@ -75,11 +88,36 @@ const ImageConverter = props => {
             ref={inputElRef}
             onChange={handleImgSelect}
           />
-          <ImageIcon />
+          <IconFont style="folder" />
         </label>
         <Button onClick={converImg}>
-          <InputIcon />
+          <IconFont style="picture" />
         </Button>
+        Col:  
+        <Select
+          labelId="col-select"
+          value={col}
+          onChange={(e) => setCol(e.target.value)}
+        >
+          <MenuItem value={1}>1</MenuItem>
+          <MenuItem value={2}>2</MenuItem>
+          <MenuItem value={3}>3</MenuItem>
+          <MenuItem value={4}>4</MenuItem>
+        </Select>
+        Row: 
+        <Select
+          labelId="row-select"
+          value={row}
+          onChange={(e) => setRow(e.target.value)}
+        >
+          <MenuItem value={1}>1</MenuItem>
+          <MenuItem value={2}>2</MenuItem>
+          <MenuItem value={3}>3</MenuItem>
+          <MenuItem value={4}>4</MenuItem>
+        </Select>
+      </div>
+      <div className="image-converter__preview">
+        <img className="image-converter__input-img" ref={imageElRef} src={imgObj && imgObj.src} />
       </div>
     </div>
   )

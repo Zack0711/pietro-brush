@@ -9,11 +9,10 @@ import {
   LocationProvider,
 } from '@reach/router'
 
-import "@babel/polyfill";
+import "core-js/stable"
+import "regenerator-runtime/runtime"
 import './reset.css'
 
-import ImageInput from './src/components/image-input'
-import Painter from './src/components/painter'
 import Editor from './src/components/editor'
 
 import store from './src/store'

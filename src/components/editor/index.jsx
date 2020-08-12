@@ -6,6 +6,7 @@ import classNames from 'classnames'
 import ImageConverter from '../image-converter'
 import Previewer from '../previewer'
 import Painter from '../painter'
+import QrGenerator from '../qr-generator'
 
 import './index.styl'
 
@@ -20,6 +21,7 @@ const Editor = props => {
       <ImageConverter />
       <Previewer />
       <Painter />
+      <QrGenerator />
     </div>
   )
 }

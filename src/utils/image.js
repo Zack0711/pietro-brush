@@ -140,8 +140,11 @@ export const convert2PaletteColor = (colorArray, palette) => {
 
 export const convert2PaletteIndex = (colorArray, palette) => {
   let convertData = new Array()
+  let paletteRef = [...palette]
   for (let i = 0; i < colorArray.length; i += 1) {
-    convertData.push(pickNearestColorIndexFromPalette(colorArray[i], palette))
+    const coloeIndex = pickNearestColorIndexFromPalette(colorArray[i], paletteRef)
+    convertData.push(coloeIndex)
+    //paletteRef.splice(coloeIndex, 1)
   }
   return convertData  
 }
@@ -156,7 +159,7 @@ export const converImageData = (imageData, palette) => {
 }
 
 const opts = {
-  colors: 16,             // desired palette size
+  colors: 15,             // desired palette size
   method: 1,               // histogram method, 2: min-population threshold within subregions; 1: global top-population
   boxSize: [64,64],        // subregion dims (if method = 2)
   boxPxls: 2,              // min-population threshold (if method = 2)

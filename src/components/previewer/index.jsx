@@ -3,21 +3,27 @@ import { useSelector, useDispatch } from 'react-redux'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 
+import TextField from '@material-ui/core/TextField'
+
 import {
   updateActiveIndex,
+  updateTitle,
+  updateAuthor,
+  updateTown,
 } from '../../actions/image'
 
 import { 
   getImageList,
   getImageData,
   getActiveIndex,
+  getTitle,
+  getAuthor,
+  getTown,
 } from '../../selectors/image'
 
 import { colors } from '../../utils/color'
 
 import './index.styl'
-
-const ZOOM = 8
 
 const Canvas = ({pattern, palette, zoom, index, active}) => {
   const dispatch = useDispatch()
@@ -68,6 +74,9 @@ const Previewer = props => {
   const list = useSelector(getImageList)
   const data = useSelector(getImageData)
   const activeIndex = useSelector(getActiveIndex)
+  const title = useSelector(getTitle)
+  const author = useSelector(getAuthor)
+  const town = useSelector(getTown)
 
   useEffect(() => {
     if (list && data) {
@@ -78,16 +87,36 @@ const Previewer = props => {
         canvasList[y][x] = d
       })
       setCanvasList(canvasList)
+      console.log(canvasList)
     }
   }, [list, data])
 
   return (
     <div className="previewer">
+      <TextField
+        label="Title"
+        variant="outlined"
+        onChange={e => dispatch(updateTitle(e.target.value))}
+        value={title}
+      />
+      <TextField
+        label="Author"
+        variant="outlined"
+        onChange={e => dispatch(updateAuthor(e.target.value))}
+        value={author}
+      />
+      <TextField
+        label="Town"
+        variant="outlined"
+        onChange={e => dispatch(updateTown(e.target.value))}
+        value={town}
+      />
       {
         canvasList.map((row, i) => (
           <div className="previewer__row" key={`rwo-${i}`}>
             {
               row.map(d => (
+                data[d] && 
                 <Canvas
                   key={d}
                   index={d}
