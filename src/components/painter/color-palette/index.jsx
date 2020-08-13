@@ -3,6 +3,12 @@ import { useSelector, useDispatch } from 'react-redux'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 
+import Button from '@material-ui/core/Button'
+import Menu from '@material-ui/core/Menu'
+import MenuItem from '@material-ui/core/MenuItem'
+
+import { IconFont } from '../../icons'
+
 import { updatePalette } from '../../../actions/image'
 import { colors } from '../../../utils/color'
 
@@ -15,8 +21,19 @@ const COLOR_SERIES = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
 const ColorPalette = ({paletteIndex}) => {
   const dispatch = useDispatch()
 
+  const [anchorEl, setAnchorEl] = useState(null)
+
+  const handleBtnClick = (e) => {
+    setAnchorEl(e.currentTarget)
+  }
+
+  const handleClose = () => {
+    setAnchorEl(null)    
+  }
+
   const handlePaletteColorChange = colorIndex => {
     dispatch(updatePalette(paletteIndex, colorIndex))
+    handleClose()
   }
 
   useEffect(() => {
@@ -24,34 +41,45 @@ const ColorPalette = ({paletteIndex}) => {
 
   return (
     <div className="color-palette">
-      <div className="color-palette__grey">
-        {
-          COLOR_GREY.map(d => (
-            <div 
-              key={colors[d][0]}
-              className={classNames('color-palette__color-block')}
-              onClick={() => handlePaletteColorChange(i)}
-              style={{ backgroundColor: `${colors[d][0]}` }}
-            />
-          ))
-        }
-      </div>
-      {
-        COLOR_SERIES.map(d => (
-          <div>
+      <Button onClick={handleBtnClick}>
+        <IconFont style="pigment" />
+      </Button>
+      <Menu
+        anchorEl={anchorEl}
+        open={Boolean(anchorEl)}
+        onClose={handleClose}
+      >
+        <div className="color-palette__wrap">
+          <div className="color-palette__grey">
             {
-              COLOR_INDEX.map(i => (
+              COLOR_GREY.map(d => (
                 <div 
-                  key={colors[15 + i + d*9][0]}
+                  key={colors[d][0]}
                   className={classNames('color-palette__color-block')}
-                  onClick={() => handlePaletteColorChange(i)}
-                  style={{ backgroundColor: `${colors[15 + i + d*9][0]}` }}
+                  onClick={() => handlePaletteColorChange(d)}
+                  style={{ backgroundColor: `${colors[d][0]}` }}
                 />
               ))
             }
           </div>
-        ))
-      }
+          {
+            COLOR_SERIES.map(d => (
+              <div>
+                {
+                  COLOR_INDEX.map(i => (
+                    <div 
+                      key={colors[15 + i + d*9][0]}
+                      className={classNames('color-palette__color-block')}
+                      onClick={() => handlePaletteColorChange(15 + i + d*9)}
+                      style={{ backgroundColor: `${colors[15 + i + d*9][0]}` }}
+                    />
+                  ))
+                }
+              </div>
+            ))
+          }
+        </div>
+      </Menu>
     </div>
   )
 }

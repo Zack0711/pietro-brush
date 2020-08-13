@@ -1,10 +1,14 @@
 @import '../../../mixin'
 
 .color-palette
-  flex-wrap wrap
-  $display-flex()
+  
+  &__wrap
+    width 300px
+    flex-wrap wrap
+    $display-flex()
   
   &__grey
+    flex-basis 100%
     $display-flex()    
 
   &__color-block

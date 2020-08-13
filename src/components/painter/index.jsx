@@ -13,7 +13,6 @@ import Selector from '../selector'
 import Pattern from './pattern'
 import Palette from './palette'
 import StampSelector from './stamp-selector'
-import ColorPalette from './color-palette'
 import IconLabel from './icon-label'
 
 import {
@@ -377,6 +376,30 @@ const Painter = props => {
   return (
     <div className="painter">
       <div className="painter__stretcher-wrap">
+        <div className="painter__tool">
+          <Selector 
+            options={TOOLS}
+            onChange={ item => setTool(item.val) }
+            selectedLabel={(<IconFont style={tool} />)}
+            itemRender={ item => (<IconLabel icon={item.icon} label={item.label} />) }
+          />
+          {
+            tool === 'stamp' && (
+              <StampSelector
+                options={STAMP_OPTIONS}
+                selectedStamp={stamp}
+                onStampChange={(type) => setStamp({...stamp, type})}
+                onSizeChange={(size) => setStamp({...stamp, size})}
+              />
+            )
+          }
+          <Selector 
+            options={MIRROR_OPTIONS}
+            onChange={ item => setMirror(item) }
+            selectedLabel={(<IconFont style={mirror.icon} />)}
+            itemRender={ item => (<IconLabel icon={item.icon} label={item.label} />) }
+          />
+        </div>
         <div 
           className="painter__stretcher"
           onMouseDown={handleMouseDown}
@@ -404,39 +427,13 @@ const Painter = props => {
           }
         </div>
       </div>
-      <div className="painter__tool">
-        <Selector 
-          options={TOOLS}
-          onChange={ item => setTool(item.val) }
-          selectedLabel={(<IconFont style={tool} />)}
-          itemRender={ item => (<IconLabel icon={item.icon} label={item.label} />) }
-        />
-        {
-          tool === 'stamp' && (
-            <StampSelector
-              options={STAMP_OPTIONS}
-              selectedStamp={stamp}
-              onStampChange={(type) => setStamp({...stamp, type})}
-              onSizeChange={(size) => setStamp({...stamp, size})}
-            />
-          )
-        }
-        <Selector 
-          options={MIRROR_OPTIONS}
-          onChange={ item => setMirror(item) }
-          selectedLabel={(<IconFont style={mirror.icon} />)}
-          itemRender={ item => (<IconLabel icon={item.icon} label={item.label} />) }
-        />
-      </div>
       {
         activeIndex > -1 && (
-          <>
-            <Palette 
-              pickupColor={pickupColor}
-              paletteIndex={paletteIndex}
-            />
-            <ColorPalette paletteIndex={paletteIndex} />
-          </>
+          <Palette 
+            className="painter__palette-wrap"
+            pickupColor={pickupColor}
+            paletteIndex={paletteIndex}
+          />
         )
       }
     </div>

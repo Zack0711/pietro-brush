@@ -3,6 +3,8 @@
 .painter
   width 320px
   border 1px solid #996
+  flex-wrap wrap
+  $display-flex()
   
   &__stretcher-wrap
     $display-flex()
@@ -21,7 +23,9 @@
     border 1px solid #666
     transform translate(-1px, -1px)
   
-
   &__tool
     clear both
     $display-flex()
+  
+  &__palette-wrap
+    flex-basis 100%

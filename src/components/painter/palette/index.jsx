@@ -4,13 +4,14 @@ import PropTypes from 'prop-types'
 import classNames from 'classnames'
 
 import { IconFont } from '../../icons'
+import ColorPalette from '../color-palette'
 
 import { getActivePalette } from '../../../selectors/image'
 import { colors } from '../../../utils/color'
 
 import './index.styl'
 
-const Palette = ({ pickupColor, paletteIndex }) => {
+const Palette = ({ pickupColor, paletteIndex, className }) => {
   const dispatch = useDispatch()
 
   const palette = useSelector(getActivePalette)
@@ -23,22 +24,22 @@ const Palette = ({ pickupColor, paletteIndex }) => {
   },[])
 
   return (
-    <div className="palette">
-      <IconFont style="palette" />
+    <div className={classNames('palette', className)}>
       <div className="palette__color-wrap">
-      {
-        palette.map((colorIndex, i) => (
-          <div 
-            key={`${i}-${colorIndex}`}
-            className={classNames('palette__color-block', {
-              'palette__color-block--active': i === paletteIndex
-            })}
-            onClick={() => handleColorPickup(i)}
-            style={{ backgroundColor: `${colors[colorIndex][0]}` }}
-          />
-        ))
-      }
+        {
+          palette.map((colorIndex, i) => (
+            <div 
+              key={`${i}-${colorIndex}`}
+              className={classNames('palette__color-block', {
+                'palette__color-block--active': i === paletteIndex
+              })}
+              onClick={() => handleColorPickup(i)}
+              style={{ backgroundColor: `${colors[colorIndex][0]}` }}
+            />
+          ))
+        }
       </div>
+      <ColorPalette paletteIndex={paletteIndex} />
     </div>
   )
 }
