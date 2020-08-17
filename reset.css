@@ -50,3 +50,12 @@ table {
 select, option, button {
   font-family: inherit;  
 }
+
+body {
+  background: #f2f0d9;
+  color: #665042;
+}
+
+* {
+  box-sizing: border-box;
+}

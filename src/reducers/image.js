@@ -11,7 +11,7 @@ import {
 import { genArray } from '../utils/tools'
 
 const DEFAULT_STATE = {
-  activeIndex: -1,
+  activeIndex: 0,
   title: '',
   author: '',
   town: '',
@@ -21,7 +21,7 @@ const DEFAULT_STATE = {
       x: 0,
       y: 0,
       pattern: genArray(1024),
-      palette: [16,24,32,40,48,56,64,72,80,88,96,104,112,120,128,136],
+      palette: [17,26,35,44,53,62,71,80,89,98,107,116,125,134,142],
     },
   }
 }

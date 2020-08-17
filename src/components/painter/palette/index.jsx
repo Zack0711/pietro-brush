@@ -34,10 +34,16 @@ const Palette = ({ pickupColor, paletteIndex, className }) => {
                 'palette__color-block--active': i === paletteIndex
               })}
               onClick={() => handleColorPickup(i)}
-              style={{ backgroundColor: `${colors[colorIndex][0]}` }}
+              style={{ background: `${colors[colorIndex][0]}` }}
             />
           ))
         }
+        <div 
+          className={classNames('palette__color-block', {
+            'palette__color-block--active': paletteIndex === -1
+          })}
+          onClick={() => handleColorPickup(-1)}
+        />
       </div>
       <ColorPalette paletteIndex={paletteIndex} />
     </div>

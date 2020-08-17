@@ -2,7 +2,6 @@
 
 .painter
   width 320px
-  border 1px solid #996
   flex-wrap wrap
   $display-flex()
   
@@ -19,13 +18,26 @@
     position absolute
     width 16px 
     height 16px
-    background #aaa
+    background url('./trans-pattern-s.jpg')
     border 1px solid #666
     transform translate(-1px, -1px)
   
   &__tool
-    clear both
+    flex-wrap wrap
+    flex-basis 48px
     $display-flex()
+  
+  &__sub-tool
+    padding 4px 48px
+    height 48px
+    position relative
+    flex-basis 100%    
+    $display-flex()
+  
+  &__mirror-selector
+    position absolute
+    top 8px
+    right 8px
   
   &__palette-wrap
     flex-basis 100%

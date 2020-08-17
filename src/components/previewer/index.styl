@@ -1,9 +1,9 @@
 @import '../../mixin'
 
 .previewer
-  width 320px
-  height 100vh
-  border 1px solid #996
+  width 144px
+  height 144px
+  background #847562
   $display-flex(column)
   
   &__row
@@ -13,3 +13,7 @@
     border 1px solid grey
     $display-flex()
     background-image url('./trans-pattern-s.jpg')
+    
+    &--active
+      border 1px solid #e5aa9c
+      

@@ -15,7 +15,7 @@ import FormControl from '@material-ui/core/FormControl'
 
 import { IconFont } from '../icons'
 
-import { updateDataAndList } from '../../actions'
+import { updateDataAndList, updateActiveIndex } from '../../actions'
 
 import { 
   colorsPalette,
@@ -28,7 +28,7 @@ import {
 
 import './index.styl'
 
-const ImageConverter = props => {
+const ImageConverter = ({onClose}) => {
   const dispatch = useDispatch()
 
   const inputElRef = useRef(null)
@@ -51,6 +51,8 @@ const ImageConverter = props => {
       data,
     } = imageQuantize(cropperRef.current.getCroppedCanvas(), row, col)
     dispatch(updateDataAndList(list, data))
+    dispatch(updateActiveIndex(0))
+    onClose()
   }
 
   const setImgCropper = () => {
@@ -80,7 +82,7 @@ const ImageConverter = props => {
   return (
     <div className="image-converter">
       <div className="image-converter__tool">
-        <label>
+        <label className="image-converter__select-wrap">
           <input
             type="file"
             accept=".jpg,.jpeg,.png"

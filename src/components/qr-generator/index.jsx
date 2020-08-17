@@ -33,11 +33,11 @@ import {
 
 import './index.styl'
 
-const ZOOM = 8
+const ZOOM = 4
 
 const QrCode = qrcodegen.QrCode
 
-const QrGenerator = (props) => {
+const QrGenerator = ({onClose}) => {
   const dispatch = useDispatch()
 
   const palette = useSelector(getActivePalette)
@@ -76,7 +76,7 @@ const QrGenerator = (props) => {
     })
 
     pattern.forEach( d => { 
-      acPattern = acPattern.concat(acPalette[d]) 
+      acPattern = acPattern.concat(acPalette[d] ? acPalette[d] : [0, 0, 0, 0]) 
     })
 
     console.log(acPattern)
@@ -91,7 +91,7 @@ const QrGenerator = (props) => {
       palette: acPalette, 
     })
     const qr = QrCode.encodeSegments([qrcodegen.QrSegment.makeBytes(bytes)], QrCode.Ecc.MEDIUM, 19, 19)
-    qr.drawCanvas(6, 2, qrRef.current)
+    qr.drawCanvas(2, 2, qrRef.current)
 
     console.log(palette)
     console.log(acPattern, acPalette, pattern)
@@ -106,24 +106,6 @@ const QrGenerator = (props) => {
 
   return (
     <div className="qr-generator">
-      <TextField
-        label="Title"
-        variant="outlined"
-        onChange={e => dispatch(updateTitle(e.target.value))}
-        value={title}
-      />
-      <TextField
-        label="Author"
-        variant="outlined"
-        onChange={e => dispatch(updateAuthor(e.target.value))}
-        value={author}
-      />
-      <TextField
-        label="Town"
-        variant="outlined"
-        onChange={e => dispatch(updateTown(e.target.value))}
-        value={town}
-      />
       <div className="qr-generator--block">
         <canvas 
           ref={canvasRef} 
@@ -134,6 +116,9 @@ const QrGenerator = (props) => {
       <Button onClick={handleQRGenerate}>
         <DynamicFeedIcon />
         Generate QR Code
+      </Button>
+      <Button onClick={onClose}>
+        Contiune Edit
       </Button>
       <div className="qr-generator--qr-code">
         <canvas ref={qrRef} />

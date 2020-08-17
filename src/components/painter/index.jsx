@@ -4,8 +4,7 @@ import PropTypes from 'prop-types'
 import classNames from 'classnames'
 
 import Button from '@material-ui/core/Button'
-import Menu from '@material-ui/core/Menu'
-import MenuItem from '@material-ui/core/MenuItem'
+import IconButton from '@material-ui/core/IconButton'
 
 import { IconFont } from '../icons'
 import Selector from '../selector'
@@ -297,8 +296,8 @@ const Painter = props => {
   }, [indicatorPos])
 
   useEffect(() => {
-    if (activeIndex > -1) {
-      renderCanvas()
+    if (activeIndex > -1 && activeIndexRef.current === activeIndex) {
+      renderCanvas(pixelsArray, canvasCtx.pattern, false)
     }
   }, [palette])
 
@@ -369,7 +368,7 @@ const Painter = props => {
     if (activeIndexRef.current !== activeIndex && activeIndex > -1) {
       activeIndexRef.current = activeIndex
       pixelsArray = pattern
-      renderCanvas()
+      renderCanvas(pattern, canvasCtx.pattern)
     }
   }, [activeIndex, pattern])
 
@@ -377,28 +376,17 @@ const Painter = props => {
     <div className="painter">
       <div className="painter__stretcher-wrap">
         <div className="painter__tool">
-          <Selector 
-            options={TOOLS}
-            onChange={ item => setTool(item.val) }
-            selectedLabel={(<IconFont style={tool} />)}
-            itemRender={ item => (<IconLabel icon={item.icon} label={item.label} />) }
-          />
           {
-            tool === 'stamp' && (
-              <StampSelector
-                options={STAMP_OPTIONS}
-                selectedStamp={stamp}
-                onStampChange={(type) => setStamp({...stamp, type})}
-                onSizeChange={(size) => setStamp({...stamp, size})}
-              />
-            )
+            TOOLS.map(d => (
+              <IconButton
+                key={d.val}
+                onClick={ () => setTool(d.val) }
+                color={ tool === d.val ? 'primary' : 'default' }
+              >
+                <IconFont style={d.icon} />
+              </IconButton>
+            ))
           }
-          <Selector 
-            options={MIRROR_OPTIONS}
-            onChange={ item => setMirror(item) }
-            selectedLabel={(<IconFont style={mirror.icon} />)}
-            itemRender={ item => (<IconLabel icon={item.icon} label={item.label} />) }
-          />
         </div>
         <div 
           className="painter__stretcher"
@@ -420,12 +408,31 @@ const Painter = props => {
                   left: `${indicatorPos.x * ZOOM}px`,
                   width: `${ZOOM}px`,
                   height: `${ZOOM}px`,
-                  backgroundColor: `${colors[palette[paletteIndex]][0]}`,
+                  ...( colors[palette[paletteIndex]] ? { background: `${colors[palette[paletteIndex]][0]}` } : {}),                  
                 }}
               />
             )
           }
         </div>
+      </div>
+      <div className="painter__sub-tool">
+        {
+          tool === 'stamp' && (
+            <StampSelector
+              options={STAMP_OPTIONS}
+              selectedStamp={stamp}
+              onStampChange={(type) => setStamp({...stamp, type})}
+              onSizeChange={(size) => setStamp({...stamp, size})}
+            />
+          )
+        }
+        <Selector 
+          className="painter__mirror-selector"
+          options={MIRROR_OPTIONS}
+          onChange={ item => setMirror(item) }
+          selectedLabel={(<IconFont style={mirror.icon} />)}
+          itemRender={ item => (<IconLabel icon={item.icon} label={item.label} />) }
+        />
       </div>
       {
         activeIndex > -1 && (

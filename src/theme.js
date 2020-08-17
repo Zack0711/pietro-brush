@@ -1,6 +1,11 @@
 import { createMuiTheme } from '@material-ui/core/styles'
 
 const theme = createMuiTheme({
+  palette: {
+    text: {
+      primary: '#665042',
+    }
+  },
   typography: {
     useNextVariants: true,
     fontFamily: '"Noto Sans", Roboto, Helvetica, Arial, sans-serif',
@@ -41,7 +46,17 @@ export default {
     },
     MuiIconButton: {
       root: {
-        padding: 4
+        padding: 6,
+      },
+      colorPrimary: {
+        color: '#f2f0d9',
+        backgroundColor: '#12c3b9',
+        '&:hover': {
+          backgroundColor: '#12c3b9',
+          '@media (hover: none)': {
+            backgroundColor: '#12c3b9',
+          }
+        }
       }
     }
   },

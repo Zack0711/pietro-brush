@@ -29,6 +29,12 @@ const StampSelector = ({ selectedStamp, options, onSizeChange, onStampChange }) 
 
   return (
     <div className="stamp-selector">
+      <Selector 
+        options={options}
+        onChange={ item => handleStampChange(item) }
+        selectedLabel={(<IconFont style="libary" />)}
+        itemRender={ item => (<IconLabel icon={item.icon} label={item.label} />) }
+      />    
       {
         sizes.map( size => (
           <IconButton
@@ -39,12 +45,6 @@ const StampSelector = ({ selectedStamp, options, onSizeChange, onStampChange }) 
           </IconButton>
         ))
       }
-      <Selector 
-        options={options}
-        onChange={ item => handleStampChange(item) }
-        selectedLabel={(<IconFont style={`${selectedStamp.type}-${selectedStamp.size}`} />)}
-        itemRender={ item => (<IconLabel icon={item.icon} label={item.label} />) }
-      />    
     </div>
   )
 }

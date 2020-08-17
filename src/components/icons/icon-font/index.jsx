@@ -7,7 +7,7 @@ import './fontello.css'
 
 const FONT_STYLE = {
   qrcode: 'icon-qrcode',
-  pen: 'icon-pencil',
+  pen: 'icon-pen',
   folder: 'icon-folder',
   picture: 'icon-picture',
   palette: 'icon-palette',
@@ -29,6 +29,7 @@ const FONT_STYLE = {
   'star-m': 'icon-star-m',
   'star-s': 'icon-star-s',
   github: 'icon-github',
+  libary: 'icon-archive'
 }
 
 const FONT_SIZE = {
@@ -43,6 +44,7 @@ const IconFont = ({size = 'm', style = 'github'}) => {
       className={ classNames(FONT_STYLE[style]) }
       style = {{
         fontSize: FONT_SIZE[size],
+        lineHeight: 1,
       }}
     />
   )

@@ -31,6 +31,7 @@ const Canvas = ({pattern, palette, zoom, index, active}) => {
 
   const renderCanvas = () => {
     const ctx = canvasRef.current.getContext('2d')
+
     pattern.forEach( (d, i) => {
       const x = i % 32
       const y = Math.floor( i / 32)
@@ -47,6 +48,7 @@ const Canvas = ({pattern, palette, zoom, index, active}) => {
 
   useEffect(() => {
     renderCanvas()
+    console.log('preview render', pattern, palette)
   }, [pattern, palette])
 
   return (
@@ -70,6 +72,7 @@ const Previewer = props => {
   const dispatch = useDispatch()
 
   const [canvasList, setCanvasList] = useState([])
+  const [zoom, setZoom] = useState(4)
 
   const list = useSelector(getImageList)
   const data = useSelector(getImageData)
@@ -86,31 +89,18 @@ const Previewer = props => {
         if (!canvasList[y]) canvasList[y] = []
         canvasList[y][x] = d
       })
+
+      const rowCount = canvasList.length
+      const colCount = canvasList[0].length
+      const zoomVal = 4 / ( canvasList.length > canvasList[0].length ? canvasList.length : canvasList[0].length )
+
+      setZoom(zoomVal)
       setCanvasList(canvasList)
-      console.log(canvasList)
     }
   }, [list, data])
 
   return (
     <div className="previewer">
-      <TextField
-        label="Title"
-        variant="outlined"
-        onChange={e => dispatch(updateTitle(e.target.value))}
-        value={title}
-      />
-      <TextField
-        label="Author"
-        variant="outlined"
-        onChange={e => dispatch(updateAuthor(e.target.value))}
-        value={author}
-      />
-      <TextField
-        label="Town"
-        variant="outlined"
-        onChange={e => dispatch(updateTown(e.target.value))}
-        value={town}
-      />
       {
         canvasList.map((row, i) => (
           <div className="previewer__row" key={`rwo-${i}`}>
@@ -122,7 +112,7 @@ const Previewer = props => {
                   index={d}
                   pattern={data[d].pattern}
                   palette={data[d].palette}
-                  zoom={4}
+                  zoom={zoom}
                   active={ d === activeIndex}
                 />
               ))
