@@ -35,7 +35,13 @@ import {
 
 import './index.styl'
 
-const ZOOM = 8
+const ZOOM_RWD = {
+  xl: 16,
+  lg: 16,
+  md: 16,
+  sm: 16,
+  xs: 8,
+}
 
 let pixelsArray = []
 let previeArray = genArray(1024)
@@ -74,8 +80,10 @@ const canvasCtx = {
   preview: null,
 }
 
-const Painter = props => {
+const Painter = ({screen}) => {
   const dispatch = useDispatch()
+
+  const [zoom, setZoom] = useState(8)
 
   const palette = useSelector(getActivePalette)
   const pattern = useSelector(getActivePattern)
@@ -101,9 +109,9 @@ const Painter = props => {
 
       if (colorIndex > -1) {
         ctx.fillStyle = colors[colorIndex][0]
-        ctx.fillRect(x*ZOOM, y*ZOOM, ZOOM, ZOOM)
+        ctx.fillRect(x*zoom, y*zoom, zoom, zoom)
       } else {
-        ctx.clearRect (x*ZOOM, y*ZOOM, ZOOM, ZOOM)
+        ctx.clearRect (x*zoom, y*zoom, zoom, zoom)
       }
 
       if (storeToArray) {
@@ -198,20 +206,29 @@ const Painter = props => {
     }
   }
 
-  const handleMouseDown = e => {
-    setIsMouseDown(true)
+  const handleStretcherPosiion = (clientX, clientY) => {
+    const stretcherRect = stretcherRef.current.getBoundingClientRect()
+    const coordinate = {
+      x: Math.floor((clientX - stretcherRect.x)/zoom),
+      y: Math.floor((clientY - stretcherRect.y)/zoom),      
+    }
+
+    setIndicatorPos(coordinate)
+    return coordinate
   }
 
-  const handleMouseUp = () => {
+  const handleMouseTouchDown = (clientX, clientY) => {
+    setIsMouseDown(true)
+    handleStretcherPosiion(clientX, clientY)
+  }
+
+  const handleMouseTouchUp = () => {
     setIsMouseDown(false)
   }
 
-  const handleMouseMove = e => {
+  const handleMouseTouchMove = (clientX, clientY) => {
     const stretcherRect = stretcherRef.current.getBoundingClientRect()
-    const coordinate = {
-      x: Math.floor((e.clientX - stretcherRect.x)/ZOOM),
-      y: Math.floor((e.clientY - stretcherRect.y)/ZOOM),      
-    }
+    const coordinate = handleStretcherPosiion(clientX, clientY)
 
     let pArray = []
 
@@ -280,7 +297,6 @@ const Painter = props => {
       renderCanvas(pArray, canvasCtx.preview, false)
     }
 
-    setIndicatorPos(coordinate)
   }
 
   const pickupColor = pIndex => {
@@ -293,7 +309,8 @@ const Painter = props => {
   }
 
   useEffect(() => {
-  }, [indicatorPos])
+    setZoom(ZOOM_RWD[screen])
+  }, [screen])
 
   useEffect(() => {
     if (activeIndex > -1 && activeIndexRef.current === activeIndex) {
@@ -315,17 +332,6 @@ const Painter = props => {
         case 'ellipse':
         case 'line':
           setAnchorPos(indicatorPos)
-          break
-        case 'stamp':
-          drawSticker({
-            x: indicatorPos.x,
-            y: indicatorPos.y,
-            callback: (x, y) => {coordinates.push({x, y})},
-            size: stamp.size,
-            type: stamp.type,
-          })
-          renderCanvas(previeArray, canvasCtx.preview, false)
-          coordinates.forEach( d => { drawPixel(d.x, d.y, paletteIndex)})
           break
       }
     } else {
@@ -360,16 +366,28 @@ const Painter = props => {
           renderCanvas(previeArray, canvasCtx.preview, false)
           coordinates.forEach( d => { drawPixel(d.x, d.y, paletteIndex)})
           break
+        case 'stamp':
+          drawSticker({
+            x: indicatorPos.x,
+            y: indicatorPos.y,
+            callback: (x, y) => {coordinates.push({x, y})},
+            size: stamp.size,
+            type: stamp.type,
+          })
+          renderCanvas(previeArray, canvasCtx.preview, false)
+          coordinates.forEach( d => { drawPixel(d.x, d.y, paletteIndex)})
+          break
       }
     }
   }, [isMouseDown])
 
   useEffect(() => {
+    console.log(activeIndex, 'render painter!')
     if (activeIndexRef.current !== activeIndex && activeIndex > -1) {
-      activeIndexRef.current = activeIndex
       pixelsArray = pattern
       renderCanvas(pattern, canvasCtx.pattern)
     }
+    activeIndexRef.current = activeIndex
   }, [activeIndex, pattern])
 
   return (
@@ -390,13 +408,17 @@ const Painter = props => {
         </div>
         <div 
           className="painter__stretcher"
-          onMouseDown={handleMouseDown}
-          onMouseUp={handleMouseUp}
-          onMouseMove={handleMouseMove}
+          onTouchStart={ e => handleMouseTouchDown(e.touches[0].clientX, e.touches[0].clientY)}
+          onTouchMove={ e => handleMouseTouchMove(e.touches[0].clientX, e.touches[0].clientY)}
+          onTouchEnd={handleMouseTouchUp}
+
+          onMouseDown={e => handleMouseTouchDown(e.clientX, e.clientY)}
+          onMouseUp={handleMouseTouchUp}
+          onMouseMove={ e => handleMouseTouchMove(e.clientX, e.clientY)}
           ref={stretcherRef}
         >
           <Pattern
-            zoom={ZOOM}
+            zoom={zoom}
             hoverCallBack={onPatternHover}
           />
           {
@@ -404,10 +426,10 @@ const Painter = props => {
               <div 
                 className="painter__indicator"
                 style={{
-                  top: `${indicatorPos.y * ZOOM}px`,
-                  left: `${indicatorPos.x * ZOOM}px`,
-                  width: `${ZOOM}px`,
-                  height: `${ZOOM}px`,
+                  top: `${indicatorPos.y * zoom}px`,
+                  left: `${indicatorPos.x * zoom}px`,
+                  width: `${zoom}px`,
+                  height: `${zoom}px`,
                   ...( colors[palette[paletteIndex]] ? { background: `${colors[palette[paletteIndex]][0]}` } : {}),                  
                 }}
               />

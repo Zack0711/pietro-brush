@@ -6,6 +6,8 @@ import classNames from 'classnames'
 import Button from '@material-ui/core/Button'
 import Modal from '@material-ui/core/Modal'
 
+import useScreen from '../../hooks/use-screen'
+
 import ImageConverter from '../image-converter'
 import Previewer from '../previewer'
 import Painter from '../painter'
@@ -17,6 +19,8 @@ const Editor = props => {
   const dispatch = useDispatch()
   const [imgConverterOpen, setImgConverterOpen] = useState(false)
   const [qrGeneratorOpen, setQrGeneratorOpen] = useState(false)
+
+  const screen = useScreen()
 
   const handleImgConverterOpen = () => {
     setImgConverterOpen(true)
@@ -35,11 +39,12 @@ const Editor = props => {
   }
 
   useEffect(() => {
-  },[])
+    console.log(screen)
+  },[screen])
 
   return (
     <div className="editor">
-      <Painter />
+      <Painter screen={screen} />
       <aside className="editor__aside">
         <Previewer />
         <div>

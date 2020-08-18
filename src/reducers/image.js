@@ -11,7 +11,7 @@ import {
 import { genArray } from '../utils/tools'
 
 const DEFAULT_STATE = {
-  activeIndex: 0,
+  activeIndex: -1,
   title: '',
   author: '',
   town: '',

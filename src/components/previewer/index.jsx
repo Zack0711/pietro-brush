@@ -48,7 +48,6 @@ const Canvas = ({pattern, palette, zoom, index, active}) => {
 
   useEffect(() => {
     renderCanvas()
-    console.log('preview render', pattern, palette)
   }, [pattern, palette])
 
   return (
@@ -96,8 +95,13 @@ const Previewer = props => {
 
       setZoom(zoomVal)
       setCanvasList(canvasList)
+      //dispatch(updateActiveIndex(0))
     }
   }, [list, data])
+
+  useEffect(() => {
+    dispatch(updateActiveIndex(0))
+  }, [])
 
   return (
     <div className="previewer">
@@ -108,7 +112,7 @@ const Previewer = props => {
               row.map(d => (
                 data[d] && 
                 <Canvas
-                  key={d}
+                  key={`rwo-${i}-${d}`}
                   index={d}
                   pattern={data[d].pattern}
                   palette={data[d].palette}

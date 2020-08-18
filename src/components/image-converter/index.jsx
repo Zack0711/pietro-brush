@@ -51,7 +51,7 @@ const ImageConverter = ({onClose}) => {
       data,
     } = imageQuantize(cropperRef.current.getCroppedCanvas(), row, col)
     dispatch(updateDataAndList(list, data))
-    dispatch(updateActiveIndex(0))
+    //dispatch(updateActiveIndex(0))
     onClose()
   }
 
