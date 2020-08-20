@@ -181,11 +181,13 @@ export const imageQuantize = (img, row, col) => {
 
   let index = 0
 
-  const dx = img.width / row
-  const dy = img.height / col
+  const dx = img.width / col
+  const dy = img.height / row
 
-  for( let i = 0; i < col; i += 1) {
-    for (let j = 0; j < row; j +=1 ) {
+  const zoom = 4 / ( row > col ? row : col )
+
+  for( let i = 0; i < row; i += 1) {
+    for (let j = 0; j < col; j +=1 ) {
       const canvas = document.createElement('CANVAS')
       const ctx = canvas.getContext('2d')
       const q = new RgbQuant(opts)
@@ -204,6 +206,7 @@ export const imageQuantize = (img, row, col) => {
         y: i,
         palette,
         pattern,
+        zoom,
       }
       index += 1
     }

@@ -38,10 +38,6 @@ const Editor = props => {
     setQrGeneratorOpen(false)
   }
 
-  useEffect(() => {
-    console.log(screen)
-  },[screen])
-
   return (
     <div className="editor">
       <Painter screen={screen} />

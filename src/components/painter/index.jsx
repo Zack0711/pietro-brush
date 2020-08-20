@@ -382,10 +382,9 @@ const Painter = ({screen}) => {
   }, [isMouseDown])
 
   useEffect(() => {
-    console.log(activeIndex, 'render painter!')
     if (activeIndexRef.current !== activeIndex && activeIndex > -1) {
       pixelsArray = pattern
-      renderCanvas(pattern, canvasCtx.pattern)
+      renderCanvas(pattern, canvasCtx.pattern, false)
     }
     activeIndexRef.current = activeIndex
   }, [activeIndex, pattern])

@@ -9,12 +9,16 @@ import {
 } from '../actions'
 
 import { genArray } from '../utils/tools'
+import { readStorage, saveStorage } from '../utils/storage'
 
 const DEFAULT_STATE = {
   activeIndex: -1,
   title: '',
   author: '',
   town: '',
+  col: 1,
+  row: 1,
+  zoom: 4,
   list: [0],
   data: {
     0: {
@@ -22,6 +26,7 @@ const DEFAULT_STATE = {
       y: 0,
       pattern: genArray(1024),
       palette: [17,26,35,44,53,62,71,80,89,98,107,116,125,134,142],
+      zoom: 4,
     },
   }
 }
@@ -72,13 +77,18 @@ export default function reducer(state = DEFAULT_STATE, action) {
       const {
         data,
         list,
+        row,
+        col,
       } = action
 
       return {
         ...state,
         activeIndex: -1,
         list,
-        data,  
+        data,
+        row,
+        col,
+        zoom: 4 / ( row > col ? row : col )
       }
 
     case UPDATE_TITLE:

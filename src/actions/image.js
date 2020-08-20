@@ -20,10 +20,12 @@ export const updateActiveIndex = (index) => ({
 })
 
 export const UPDATE_DATA_AND_LIST = 'UPDATE_DATA_AND_LIST'
-export const updateDataAndList = (list, data) => ({
+export const updateDataAndList = (list, data, row, col) => ({
   type: UPDATE_DATA_AND_LIST,
   list,
   data,
+  row, 
+  col
 })
 
 export const UPDATE_TITLE = 'UPDATE_TITLE'

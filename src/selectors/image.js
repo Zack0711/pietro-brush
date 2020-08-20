@@ -29,3 +29,10 @@ export const getTitle = state => get(state, `image.title`)
 export const getAuthor = state => get(state, `image.author`)
 
 export const getTown = state => get(state, `image.town`)
+
+export const getZoom = state => get(state, `image.zoom`)
+
+export const getColAndRow = state => ({
+  col: get(state, `image.col`),
+  row: get(state, `image.row`),
+})

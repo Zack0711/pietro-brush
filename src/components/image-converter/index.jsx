@@ -50,7 +50,7 @@ const ImageConverter = ({onClose}) => {
       list,
       data,
     } = imageQuantize(cropperRef.current.getCroppedCanvas(), row, col)
-    dispatch(updateDataAndList(list, data))
+    dispatch(updateDataAndList(list, data, row, col))
     //dispatch(updateActiveIndex(0))
     onClose()
   }
@@ -62,7 +62,7 @@ const ImageConverter = ({onClose}) => {
     }
 
     cropperRef.current = new Cropper(imageElRef.current, {
-      aspectRatio: row / col,
+      aspectRatio: col / row,
       viewMode: 1,
     })    
   }
@@ -95,22 +95,22 @@ const ImageConverter = ({onClose}) => {
         <Button onClick={converImg}>
           <IconFont style="picture" />
         </Button>
-        Col:  
+        Row:  
         <Select
           labelId="col-select"
-          value={col}
-          onChange={(e) => setCol(e.target.value)}
+          value={row}
+          onChange={(e) => setRow(e.target.value)}
         >
           <MenuItem value={1}>1</MenuItem>
           <MenuItem value={2}>2</MenuItem>
           <MenuItem value={3}>3</MenuItem>
           <MenuItem value={4}>4</MenuItem>
         </Select>
-        Row: 
+        Col: 
         <Select
           labelId="row-select"
-          value={row}
-          onChange={(e) => setRow(e.target.value)}
+          value={col}
+          onChange={(e) => setCol(e.target.value)}
         >
           <MenuItem value={1}>1</MenuItem>
           <MenuItem value={2}>2</MenuItem>
