@@ -1,0 +1,398 @@
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-family: inherit;
+  font-size: 100%;
+  vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+  display: block;
+}
+body {
+  line-height: 1;
+}
+ol, ul {
+  list-style: none;
+}
+blockquote, q {
+  quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+  content: '';
+  content: none;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+select, option, button {
+  font-family: inherit;  
+}
+
+body {
+  background: #f2f0d9;
+  color: #665042;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+@font-face {
+  font-family: 'fontello';
+  src: url(public/fonts/fontello.eot);
+  src: url(public/fonts/fontello.eot#iefix) format('embedded-opentype'),
+       url(public/fonts/fontello.woff2) format('woff2'),
+       url(public/fonts/fontello.woff) format('woff'),
+       url(public/fonts/fontello.ttf) format('truetype'),
+       url(public/fonts/fontello.svg#fontello) format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+/* Chrome hack: SVG is rendered more smooth in Windozze. 100% magic, uncomment if you need it. */
+/* Note, that will break hinting! In other OS-es font will be not as sharp as it could be */
+/*
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  @font-face {
+    font-family: 'fontello';
+    src: url('../font/fontello.svg?84306799#fontello') format('svg');
+  }
+}
+*/
+ 
+ [class^="icon-"]:before, [class*=" icon-"]:before {
+  font-family: "fontello";
+  font-style: normal;
+  font-weight: normal;
+  speak: never;
+ 
+  display: inline-block;
+  text-decoration: inherit;
+  width: 1em;
+  text-align: center;
+  /* opacity: .8; */
+ 
+  /* For safety - reset parent styles, that can break glyph codes*/
+  font-variant: normal;
+  text-transform: none;
+ 
+  /* fix buttons height, for twitter bootstrap */
+  line-height: 1em;
+ 
+  /* Animation center compensation - margins should be symmetric */
+  /* remove if not needed */
+ 
+  /* you can be more comfortable with increased icons size */
+  /* font-size: 120%; */
+ 
+  /* Font smoothing. That was taken from TWBS */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+ 
+  /* Uncomment for 3D effect */
+  /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
+}
+ 
+.icon-qrcode:before { content: '\e800'; } /* '' */
+.icon-pen:before { content: '\e801'; } /* '' */
+.icon-move:before { content: '\e802'; } /* '' */
+.icon-folder:before { content: '\e803'; } /* '' */
+.icon-picture:before { content: '\e804'; } /* '' */
+.icon-archive:before { content: '\e805'; } /* '' */
+.icon-crop:before { content: '\e806'; } /* '' */
+.icon-previous:before { content: '\e807'; } /* '' */
+.icon-palette:before { content: '\e81a'; } /* '' */
+.icon-bucket:before { content: '\e81b'; } /* '' */
+.icon-bucket-all:before { content: '\e81c'; } /* '' */
+.icon-mirror-horizontal:before { content: '\e81d'; } /* '' */
+.icon-mirror-vertical:before { content: '\e81e'; } /* '' */
+.icon-mirror-corner:before { content: '\e81f'; } /* '' */
+.icon-heart-l:before { content: '\e820'; } /* '' */
+.icon-heart-m:before { content: '\e821'; } /* '' */
+.icon-heart-s:before { content: '\e822'; } /* '' */
+.icon-rect:before { content: '\e823'; } /* '' */
+.icon-ellipse:before { content: '\e824'; } /* '' */
+.icon-line:before { content: '\e825'; } /* '' */
+.icon-stamp:before { content: '\e826'; } /* '' */
+.icon-star-l:before { content: '\e827'; } /* '' */
+.icon-star-m:before { content: '\e828'; } /* '' */
+.icon-star-s:before { content: '\e829'; } /* '' */
+.icon-pigment:before { content: '\e82a'; } /* '' */
+.icon-mirror-no:before { content: '\e82b'; } /* '' */
+.icon-github:before { content: '\f056'; } /* '' */
+.image-converter {
+  width: 100vw;
+  height: 80%;
+  max-width: 768px;
+  position: relative;
+  background: #fff;
+}
+.image-converter__preview {
+  width: 100%;
+  height: calc(100% - 48px);
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.image-converter__input-img {
+  max-width: 100%;
+}
+.image-converter__tool {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.image-converter__select-wrap {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 64px;
+}
+.image-converter__select-input {
+  display: none;
+}
+.image-converter__crop-count {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background: #f2f0d9;
+  border-radius: 4px;
+  padding: 4px 8px;
+}
+
+.block {
+  border: 1px solid #808080;
+  background-image: url(src/components/previewer/block/trans-pattern-s.jpg);
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.block--active {
+  border: 1px solid #e5aa9c;
+}
+
+.previewer {
+  width: 144px;
+  height: 144px;
+  background: #847562;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.previewer__block--wrap {
+  flex-wrap: wrap;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.pattern {
+  position: relative;
+  display: flex;
+}
+.pattern__preview {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.color-palette__wrap {
+  width: 300px;
+  flex-wrap: wrap;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.color-palette__grey {
+  flex-basis: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.color-palette__color-block {
+  cursor: pointer;
+  border: 1px solid transparent;
+  width: 16px;
+  height: 16px;
+  margin: 1px;
+}
+.color-palette__color-block--active {
+  border-color: #666;
+}
+
+.palette {
+  padding: 4px 0;
+  flex-wrap: wrap;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.palette__color-wrap {
+  flex-basis: 270px;
+  flex-wrap: wrap;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.palette__color-block {
+  cursor: pointer;
+  border: 1px solid transparent;
+  width: 16px;
+  height: 32px;
+  background: url(src/components/painter/palette/trans-pattern-s.jpg);
+}
+.palette__color-block--active {
+  border-color: #666;
+}
+
+.icon-label {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.icon-label__label {
+  margin-left: 8px;
+}
+
+.stamp-selector {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.painter {
+  flex-wrap: wrap;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.painter__stretcher-wrap {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.painter__stretcher {
+  position: relative;
+  border: 1px solid #808080;
+  overflow: hidden;
+  background-image: url(src/components/painter/trans-pattern-s.jpg);
+}
+.painter__indicator {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  background: url(src/components/painter/trans-pattern-s.jpg);
+  border: 1px solid #666;
+  transform: translate(-1px, -1px);
+}
+.painter__tool {
+  flex-wrap: wrap;
+  flex-basis: 48px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.painter__sub-tool {
+  padding: 4px 48px;
+  height: 48px;
+  position: relative;
+  flex-basis: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.painter__palette-wrap {
+  flex-basis: 100%;
+}
+
+.qr-generator {
+  width: 100vw;
+  height: 80%;
+  max-width: 768px;
+  position: relative;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.qr-generator__block {
+  border: 1px solid #808080;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background-image: url(src/components/qr-generator/trans-pattern-s.jpg);
+}
+
+.editor {
+  width: 100vw;
+  height: 100vh;
+  flex-wrap: wrap;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.editor__wrap {
+  max-width: 768px;
+}
+.editor__aside {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.editor__aside--tool {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.editor__modal {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
