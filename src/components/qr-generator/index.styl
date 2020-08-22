@@ -1,14 +1,47 @@
 @import '../../mixin'
 
 .qr-generator
-  width 100vw
+  width 60%
   height 80%
-  max-width 768px
+  min-width 320px
+  max-width 540px
   position relative
-  background white  
+  background #f2f0d9  
   $display-flex(column)
+      
+  &__author-information
+    margin 8px 0 16px
+    position relative
+    text-align center
+    padding 0 48px
+  
+  &__author-edit-btn
+    position absolute !important
+    top 0
+    right 0
+  
+  &__author-name
+    color #887966
+    font-size 14px
 
   &__block
     border 1px solid grey
     $display-flex()
-    background-image url('./trans-pattern-s.jpg')  
+    background-image url('./trans-pattern-s.jpg')
+  
+  &__qr-code
+    margin 8px 0
+  
+  &__modal
+    $display-flex()
+
+.author-edit-modal
+  background white
+  padding 16px
+  $display-flex(column)
+
+  &__input
+    margin 4px 0
+  
+  &__tool
+    margin 8px 0

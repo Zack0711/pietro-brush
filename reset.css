@@ -54,6 +54,7 @@ select, option, button {
 body {
   background: #f2f0d9;
   color: #665042;
+  font-family: "Noto Sans", Roboto, Helvetica, Arial, sans-serif;
 }
 
 * {

@@ -62,15 +62,15 @@ const TOOLS = [
 ]
 
 const MIRROR_OPTIONS = [
-  { label: '一般', key: 'mirror-0', val: 0, icon: 'mirror-no' },
+  { label: '一般(無鏡相)', key: 'mirror-0', val: 0, icon: 'mirror-no' },
   { label: '水平鏡像', key: 'mirror-1', val: 1, icon: 'mirror-horizontal' },
   { label: '垂直鏡像', key: 'mirror-2', val: 2, icon: 'mirror-vertical' },
   { label: '對角鏡像', key: 'mirror-3', val: 3, icon: 'mirror-corner' },
 ]
 
 const STAMP_OPTIONS = [
-  { label: 'star', key: 'star', val: 'star', icon: 'star-m', sizes: ['s', 'm', 'l'] },
-  { label: 'heart', key: 'heart', val: 'heart', icon: 'heart-m', sizes: ['s', 'm', 'l'] },
+  { label: '星星', key: 'star', val: 'star', icon: 'star-m', sizes: ['s', 'm', 'l'] },
+  { label: '愛心', key: 'heart', val: 'heart', icon: 'heart-m', sizes: ['s', 'm', 'l'] },
 ]
 
 const PREVIEW_TOOL = {
@@ -431,62 +431,64 @@ const Painter = ({screen}) => {
             disabled={ step < 1 }
             onClick={backToPreviousStorage}
           >
-            P
+            <IconFont style="step-back" />
           </IconButton>
         </div>
-        <div 
-          className="painter__stretcher"
-          onTouchStart={ e => handleMouseTouchDown(e.touches[0].clientX, e.touches[0].clientY)}
-          onTouchMove={ e => handleMouseTouchMove(e.touches[0].clientX, e.touches[0].clientY)}
-          onTouchEnd={handleMouseTouchUp}
+        <div className="painter__main">
+          <div 
+            className="painter__stretcher"
+            onTouchStart={ e => handleMouseTouchDown(e.touches[0].clientX, e.touches[0].clientY)}
+            onTouchMove={ e => handleMouseTouchMove(e.touches[0].clientX, e.touches[0].clientY)}
+            onTouchEnd={handleMouseTouchUp}
 
-          onMouseDown={e => handleMouseTouchDown(e.clientX, e.clientY)}
-          onMouseUp={handleMouseTouchUp}
-          onMouseMove={ e => handleMouseTouchMove(e.clientX, e.clientY)}
-          ref={stretcherRef}
-        >
-          <Pattern
-            zoom={zoom}
-            hoverCallBack={onPatternHover}
-          />
-          {
-            ( tool !== 'line' && activeIndex > -1 ) && (
-              <div 
-                className="painter__indicator"
-                style={{
-                  top: `${indicatorPos.y * zoom}px`,
-                  left: `${indicatorPos.x * zoom}px`,
-                  width: `${zoom}px`,
-                  height: `${zoom}px`,
-                  ...( colors[palette[paletteIndex]] ? { background: `${colors[palette[paletteIndex]][0]}` } : {}),                  
-                }}
-              />
-            )
-          }
+            onMouseDown={e => handleMouseTouchDown(e.clientX, e.clientY)}
+            onMouseUp={handleMouseTouchUp}
+            onMouseMove={ e => handleMouseTouchMove(e.clientX, e.clientY)}
+            ref={stretcherRef}
+          >
+            <Pattern
+              zoom={zoom}
+              hoverCallBack={onPatternHover}
+            />
+            {
+              ( tool !== 'line' && activeIndex > -1 ) && (
+                <div 
+                  className="painter__indicator"
+                  style={{
+                    top: `${indicatorPos.y * zoom}px`,
+                    left: `${indicatorPos.x * zoom}px`,
+                    width: `${zoom}px`,
+                    height: `${zoom}px`,
+                    ...( colors[palette[paletteIndex]] ? { background: `${colors[palette[paletteIndex]][0]}` } : {}),                  
+                  }}
+                />
+              )
+            }
+          </div>
+          <div className="painter__sub-tool">
+            {
+              tool === 'stamp' && (
+                <StampSelector
+                  options={STAMP_OPTIONS}
+                  selectedStamp={stamp}
+                  onStampChange={(type) => setStamp({...stamp, type})}
+                  onSizeChange={(size) => setStamp({...stamp, size})}
+                />
+              )
+            }
+            {
+              tool === 'pen' && (
+                <Selector 
+                  className="painter__mirror-selector"
+                  options={MIRROR_OPTIONS}
+                  onChange={ item => setMirror(item) }
+                  selectedLabel={(<IconLabel icon={mirror.icon} label={mirror.label} />)}
+                  itemRender={ item => (<IconLabel icon={item.icon} label={item.label} />) }
+                />
+              )
+            }
+          </div>
         </div>
-      </div>
-      <div className="painter__sub-tool">
-        {
-          tool === 'stamp' && (
-            <StampSelector
-              options={STAMP_OPTIONS}
-              selectedStamp={stamp}
-              onStampChange={(type) => setStamp({...stamp, type})}
-              onSizeChange={(size) => setStamp({...stamp, size})}
-            />
-          )
-        }
-        {
-          tool === 'pen' && (
-            <Selector 
-              className="painter__mirror-selector"
-              options={MIRROR_OPTIONS}
-              onChange={ item => setMirror(item) }
-              selectedLabel={(<IconLabel icon={mirror.icon} label={mirror.label} />)}
-              itemRender={ item => (<IconLabel icon={item.icon} label={item.label} />) }
-            />
-          )
-        }
       </div>
     </div>
   )

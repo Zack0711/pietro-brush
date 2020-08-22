@@ -7,11 +7,13 @@ import 'cropperjs/dist/cropper.css'
 import Cropper from 'cropperjs'
 
 import Button from '@material-ui/core/Button'
+import IconButton from '@material-ui/core/IconButton'
 
 import Select from '@material-ui/core/Select'
 import MenuItem from '@material-ui/core/MenuItem'
 import InputLabel from '@material-ui/core/InputLabel'
 import FormControl from '@material-ui/core/FormControl'
+import CloseIcon from '@material-ui/icons/Close'
 
 import { IconFont } from '../icons'
 
@@ -51,7 +53,6 @@ const ImageConverter = ({onClose}) => {
       data,
     } = imageQuantize(cropperRef.current.getCroppedCanvas(), row, col)
     dispatch(updateDataAndList(list, data, row, col))
-    //dispatch(updateActiveIndex(0))
     onClose()
   }
 
@@ -81,6 +82,15 @@ const ImageConverter = ({onClose}) => {
 
   return (
     <div className="image-converter">
+      <div className="image-converter__header">
+        匯入圖片進行裁切
+        <IconButton 
+          className="image-converter__close-btn"
+          onClick={() => onClose()}
+        >
+          <CloseIcon />
+        </IconButton>
+      </div>
       <div className="image-converter__preview">
         <img className="image-converter__input-img" ref={imageElRef} src={imgObj && imgObj.src} />
       </div>
@@ -101,6 +111,7 @@ const ImageConverter = ({onClose}) => {
             labelId="col-select"
             value={row}
             onChange={(e) => setRow(e.target.value)}
+            disabled={!imgObj}
           >
             <MenuItem value={1}>1</MenuItem>
             <MenuItem value={2}>2</MenuItem>
@@ -112,6 +123,7 @@ const ImageConverter = ({onClose}) => {
             labelId="row-select"
             value={col}
             onChange={(e) => setCol(e.target.value)}
+            disabled={!imgObj}
           >
             <MenuItem value={1}>1</MenuItem>
             <MenuItem value={2}>2</MenuItem>

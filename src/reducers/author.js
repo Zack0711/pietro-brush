@@ -6,9 +6,9 @@ import {
 } from '../actions'
 
 export const DEFAULT_STATE = {
-  title: '',
-  author: '',
-  town: '',
+  title: 'Magic Pattern',
+  author: 'Pietro',
+  town: 'Riku',
 }
 
 export default function reducer(state = DEFAULT_STATE, action) {

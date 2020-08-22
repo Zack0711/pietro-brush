@@ -5,8 +5,9 @@ import classNames from 'classnames'
 
 import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
+import Modal from '@material-ui/core/Modal'
 
-import DynamicFeedIcon from '@material-ui/icons/DynamicFeed'
+import { IconFont } from '../icons'
 
 import { makeQrContents } from '../../utils/qrcode'
 import qrcodegen from '../../utils/qrcodegen'
@@ -17,9 +18,7 @@ import {
 } from '../../utils/color'
 
 import {
-  updateTitle,
-  updateAuthor,
-  updateTown,
+  updateAuthorInfo,
 } from '../../actions/author'
 
 import { 
@@ -40,6 +39,52 @@ const ZOOM = 4
 
 const QrCode = qrcodegen.QrCode
 
+const AuthorEditModal = ({ author, title, onClose}) => {
+  const dispatch = useDispatch()
+
+  const [inputTitle, setInputTitle] = useState('')
+  const [inputAuthor, setInputAuthor] = useState('')
+
+  const handleSave = () => {
+    dispatch(updateAuthorInfo({title: inputTitle, author: inputAuthor}))
+    onClose()
+  }
+
+  const handleCancel = () => {
+    onClose()
+  }
+
+  useEffect(() => {
+    setInputTitle(title)
+    setInputAuthor(author)
+  },[])
+
+  return(
+    <div className="author-edit-modal">
+      <TextField 
+        label="標題"
+        value={inputTitle}
+        className="author-edit-modal__input"
+        onChange={e => setInputTitle(e.currentTarget.value)}
+      />
+      <TextField 
+        label="作者"
+        value={inputAuthor}
+        onChange={e => setInputAuthor(e.currentTarget.value)}
+        className="author-edit-modal__input"
+      />
+      <div className="author-edit-modal__tool">
+        <Button onClick={handleSave}>
+          儲存
+        </Button>
+        <Button onClick={handleCancel}>
+          取消
+        </Button>
+      </div>
+    </div>
+  )
+}
+
 const QrGenerator = ({onClose}) => {
   const dispatch = useDispatch()
 
@@ -49,6 +94,8 @@ const QrGenerator = ({onClose}) => {
   const title = useSelector(getTitle)
   const author = useSelector(getAuthor)
   const town = useSelector(getTown)
+
+  const [authorEditModalOpen, setAuthorEditModalOpen] = useState(false)
 
   const canvasRef = useRef(null)
   const qrRef = useRef(null)
@@ -84,14 +131,18 @@ const QrGenerator = ({onClose}) => {
 
     const imageData = new ImageData( new Uint8ClampedArray(acPattern), 32, 32)
     const bytes = makeQrContents({
-      title: 'Test Pattern',
-      author: 'Zack',
-      town: 'Liku',
+      title,
+      author,
+      town,
       imageData,      
       palette: acPalette, 
     })
     const qr = QrCode.encodeSegments([qrcodegen.QrSegment.makeBytes(bytes)], QrCode.Ecc.MEDIUM, 19, 19)
     qr.drawCanvas(2, 2, qrRef.current)
+  }
+
+  const handleAuthorEditModalClose = () => {
+    setAuthorEditModalOpen(false)
   }
 
   useEffect(() => {
@@ -101,25 +152,48 @@ const QrGenerator = ({onClose}) => {
     }
   }, [pattern, palette])
 
+  useEffect(() => {
+    if(activeIndex > -1 && pattern && palette) {
+      handleQRGenerate()
+    }
+  }, [title, author])
+
   return (
     <div className="qr-generator">
-      <div className="qr-generator--block">
+      <div className="qr-generator__author-information">
+        <div className="qr-generator__author-title">{title}</div>
+        <div className="qr-generator__author-name">{author}</div>
+        <Button 
+          className="qr-generator__author-edit-btn"
+          onClick={() => setAuthorEditModalOpen(true)}>
+          <IconFont style="pen" />
+        </Button>
+      </div>
+      <div className="qr-generator__block">
         <canvas 
           ref={canvasRef} 
           width={32 * ZOOM}
           height={32 * ZOOM}
         />
       </div>
-      <Button onClick={handleQRGenerate}>
-        <DynamicFeedIcon />
-        Generate QR Code
-      </Button>
-      <Button onClick={onClose}>
-        Contiune Edit
-      </Button>
-      <div className="qr-generator--qr-code">
+      <div className="qr-generator__qr-code">
         <canvas ref={qrRef} />
       </div>
+      <Button onClick={onClose}>
+        關閉視窗
+      </Button>
+      <Modal
+        open={authorEditModalOpen}
+        onClose={handleAuthorEditModalClose}
+        className="qr-generator__modal"
+        keepMounted={true}
+      >
+        <AuthorEditModal
+          author={author}
+          title={title}
+          onClose={handleAuthorEditModalClose}
+        />
+      </Modal>
     </div>
   )
 }

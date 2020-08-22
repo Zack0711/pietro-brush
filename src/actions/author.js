@@ -18,6 +18,6 @@ export const updateTown = town => ({
 
 export const UPDATE_AUTHOR_INFO = 'UPDATE_AUTHOR_INFO'
 export const updateAuthorInfo = info => ({
-  type: UPDATE_TOWN,
-  ...info,
+  type: UPDATE_AUTHOR_INFO,
+  info,
 })

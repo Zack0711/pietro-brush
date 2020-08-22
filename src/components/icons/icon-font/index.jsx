@@ -16,7 +16,7 @@ const FONT_STYLE = {
   bucket: 'icon-bucket',
   move: 'icon-move',
   'bucket-all': 'icon-bucket-all',
-  'mirror-no': 'icon-pen',
+  'mirror-no': 'icon-mirror-no',
   'mirror-horizontal': 'icon-mirror-horizontal',
   'mirror-vertical': 'icon-mirror-vertical',
   'mirror-corner': 'icon-mirror-corner',
@@ -31,7 +31,8 @@ const FONT_STYLE = {
   'star-m': 'icon-star-m',
   'star-s': 'icon-star-s',
   github: 'icon-github',
-  libary: 'icon-archive'
+  libary: 'icon-archive',
+  'step-back': 'icon-previous',
 }
 
 const FONT_SIZE = {
