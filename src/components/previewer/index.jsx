@@ -28,7 +28,7 @@ const Previewer = props => {
 
   useEffect(() => {
     if(list.length > 0) {
-    //  dispatch(updateActiveIndex(0))
+      //dispatch(updateActiveIndex(0))
     }
   }, [list])
 

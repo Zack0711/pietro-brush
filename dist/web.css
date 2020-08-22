@@ -54,6 +54,7 @@ select, option, button {
 body {
   background: #f2f0d9;
   color: #665042;
+  font-family: "Noto Sans", Roboto, Helvetica, Arial, sans-serif;
 }
 
 * {
@@ -149,9 +150,23 @@ body {
   position: relative;
   background: #fff;
 }
+.image-converter__header {
+  height: 48px;
+  padding: 0 48px;
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.image-converter__close-btn {
+  position: absolute !important;
+  top: 0;
+  right: 0;
+}
 .image-converter__preview {
   width: 100%;
-  height: calc(100% - 48px);
+  height: calc(100% - 96px);
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -161,6 +176,7 @@ body {
   max-width: 100%;
 }
 .image-converter__tool {
+  height: 48px;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -332,9 +348,10 @@ body {
   align-items: center;
 }
 .painter__sub-tool {
-  padding: 4px 48px;
+  padding: 4px;
   height: 48px;
   position: relative;
+  background: #fdc0c7;
   flex-basis: 100%;
   display: flex;
   flex-direction: row;
@@ -346,15 +363,31 @@ body {
 }
 
 .qr-generator {
-  width: 100vw;
+  width: 60%;
   height: 80%;
-  max-width: 768px;
+  min-width: 320px;
+  max-width: 540px;
   position: relative;
-  background: #fff;
+  background: #f2f0d9;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+.qr-generator__author-information {
+  margin: 8px 0 16px;
+  position: relative;
+  text-align: center;
+  padding: 0 48px;
+}
+.qr-generator__author-edit-btn {
+  position: absolute !important;
+  top: 0;
+  right: 0;
+}
+.qr-generator__author-name {
+  color: #887966;
+  font-size: 14px;
 }
 .qr-generator__block {
   border: 1px solid #808080;
@@ -363,6 +396,29 @@ body {
   justify-content: center;
   align-items: center;
   background-image: url(src/components/qr-generator/trans-pattern-s.jpg);
+}
+.qr-generator__qr-code {
+  margin: 8px 0;
+}
+.qr-generator__modal {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.author-edit-modal {
+  background: #fff;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.author-edit-modal__input {
+  margin: 4px 0;
+}
+.author-edit-modal__tool {
+  margin: 8px 0;
 }
 
 .editor {
@@ -378,6 +434,7 @@ body {
   max-width: 768px;
 }
 .editor__aside {
+  margin: 8px 0 0 0;
   display: flex;
   flex-direction: row;
   justify-content: center;

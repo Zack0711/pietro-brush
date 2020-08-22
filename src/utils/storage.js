@@ -30,7 +30,6 @@ export const readStorage = () => {
     storage = localStorage.getItem(STORAGE_NAME)
     state = JSON.parse(storage)
   } catch(err) {
-    console.log(err)
     parseError = true
   }
 
@@ -53,7 +52,6 @@ export const saveStorage = data => {
     localStorage.setItem(STORAGE_NAME, storageString)
     steps.push(storageString)
     currentStep += 1
-    console.log('Save to Storage!')
     store.dispatch(updateStep(currentStep))
   }
 }
