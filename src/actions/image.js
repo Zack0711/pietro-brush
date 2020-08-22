@@ -28,21 +28,14 @@ export const updateDataAndList = (list, data, row, col) => ({
   col
 })
 
-export const UPDATE_TITLE = 'UPDATE_TITLE'
-export const updateTitle = title => ({
-  type: UPDATE_TITLE,
-  title,
+export const UPDATE_IMAGE_STATE = 'UPDATE_IMAGE_STATE'
+export const updateImageState = state => ({
+  type: UPDATE_IMAGE_STATE,
+  state,
 })
 
-export const UPDATE_AUTHOR = 'UPDATE_AUTHOR'
-export const updateAuthor = author => ({
-  type: UPDATE_AUTHOR,
-  author,
+export const UPDATE_STEP = 'UPDATE_STEP'
+export const updateStep = step => ({
+  type: UPDATE_STEP,
+  step,
 })
-
-export const UPDATE_TOWN = 'UPDATE_TOWN'
-export const updateTown = town => ({
-  type: UPDATE_TOWN,
-  town,
-})
-

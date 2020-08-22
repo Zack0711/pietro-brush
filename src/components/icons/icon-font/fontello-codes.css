@@ -5,6 +5,8 @@
 .icon-folder:before { content: '\e803'; } /* '' */
 .icon-picture:before { content: '\e804'; } /* '' */
 .icon-archive:before { content: '\e805'; } /* '' */
+.icon-crop:before { content: '\e806'; } /* '' */
+.icon-previous:before { content: '\e807'; } /* '' */
 .icon-palette:before { content: '\e81a'; } /* '' */
 .icon-bucket:before { content: '\e81b'; } /* '' */
 .icon-bucket-all:before { content: '\e81c'; } /* '' */
@@ -22,4 +24,5 @@
 .icon-star-m:before { content: '\e828'; } /* '' */
 .icon-star-s:before { content: '\e829'; } /* '' */
 .icon-pigment:before { content: '\e82a'; } /* '' */
+.icon-mirror-no:before { content: '\e82b'; } /* '' */
 .icon-github:before { content: '\f056'; } /* '' */

@@ -24,13 +24,11 @@ export const getActivePattern = state => {
   return get(state, `image.data.${activeIndex}.pattern`)
 }
 
-export const getTitle = state => get(state, `image.title`)
-
-export const getAuthor = state => get(state, `image.author`)
-
-export const getTown = state => get(state, `image.town`)
-
 export const getZoom = state => get(state, `image.zoom`)
+
+export const getStep = state => get(state, `image.step`)
+
+export const getListUpdateBy = state => get(state, 'image.listUpdateBy')
 
 export const getColAndRow = state => ({
   col: get(state, `image.col`),

@@ -54,7 +54,7 @@ const ColorPalette = ({paletteIndex}) => {
             {
               COLOR_GREY.map(d => (
                 <div 
-                  key={colors[d][0]}
+                  key={`${d}-${colors[d][0]}`}
                   className={classNames('color-palette__color-block')}
                   onClick={() => handlePaletteColorChange(d)}
                   style={{ backgroundColor: `${colors[d][0]}` }}
@@ -64,11 +64,11 @@ const ColorPalette = ({paletteIndex}) => {
           </div>
           {
             COLOR_SERIES.map(d => (
-              <div>
+              <div key={`color-set-${d}`}>
                 {
                   COLOR_INDEX.map(i => (
                     <div 
-                      key={colors[15 + i + d*9][0]}
+                      key={`${d}-${i}-${colors[15 + i + d*9][0]}`}
                       className={classNames('color-palette__color-block')}
                       onClick={() => handlePaletteColorChange(15 + i + d*9)}
                       style={{ backgroundColor: `${colors[15 + i + d*9][0]}` }}

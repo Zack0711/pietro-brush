@@ -1,2 +1,2 @@
-export * from './pixel'
+export * from './author'
 export * from './image'

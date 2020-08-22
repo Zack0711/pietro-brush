@@ -20,16 +20,19 @@ import {
   updateTitle,
   updateAuthor,
   updateTown,
-} from '../../actions/image'
+} from '../../actions/author'
 
 import { 
   getActiveIndex,
   getActivePalette,
   getActivePattern,
+} from '../../selectors/image'
+
+import { 
   getTitle,
   getAuthor,
   getTown,
-} from '../../selectors/image'
+} from '../../selectors/author'
 
 import './index.styl'
 
@@ -79,10 +82,7 @@ const QrGenerator = ({onClose}) => {
       acPattern = acPattern.concat(acPalette[d] ? acPalette[d] : [0, 0, 0, 0]) 
     })
 
-    console.log(acPattern)
     const imageData = new ImageData( new Uint8ClampedArray(acPattern), 32, 32)
-    console.log(imageData)
-
     const bytes = makeQrContents({
       title: 'Test Pattern',
       author: 'Zack',
@@ -92,15 +92,12 @@ const QrGenerator = ({onClose}) => {
     })
     const qr = QrCode.encodeSegments([qrcodegen.QrSegment.makeBytes(bytes)], QrCode.Ecc.MEDIUM, 19, 19)
     qr.drawCanvas(2, 2, qrRef.current)
-
-    console.log(palette)
-    console.log(acPattern, acPalette, pattern)
-    console.log('handleQRGenerate')
   }
 
   useEffect(() => {
     if(activeIndex > -1 && pattern && palette) {
       renderCanvas()
+      handleQRGenerate()
     }
   }, [pattern, palette])
 

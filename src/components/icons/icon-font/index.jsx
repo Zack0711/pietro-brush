@@ -6,6 +6,7 @@ import './index.styl'
 import './fontello.css'
 
 const FONT_STYLE = {
+  crop: 'icon-crop',
   qrcode: 'icon-qrcode',
   pen: 'icon-pen',
   folder: 'icon-folder',
@@ -15,6 +16,7 @@ const FONT_STYLE = {
   bucket: 'icon-bucket',
   move: 'icon-move',
   'bucket-all': 'icon-bucket-all',
+  'mirror-no': 'icon-pen',
   'mirror-horizontal': 'icon-mirror-horizontal',
   'mirror-vertical': 'icon-mirror-vertical',
   'mirror-corner': 'icon-mirror-corner',

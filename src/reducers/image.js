@@ -3,32 +3,21 @@ import {
   UPDATE_PALETTE,
   UPDATE_ACTIVE_INDEX,
   UPDATE_DATA_AND_LIST,
-  UPDATE_TITLE,
-  UPDATE_AUTHOR,
-  UPDATE_TOWN,
+  UPDATE_IMAGE_STATE,
+  UPDATE_STEP,
 } from '../actions'
 
-import { genArray } from '../utils/tools'
 import { readStorage, saveStorage } from '../utils/storage'
 
 const DEFAULT_STATE = {
   activeIndex: -1,
-  title: '',
-  author: '',
-  town: '',
   col: 1,
   row: 1,
   zoom: 4,
-  list: [0],
-  data: {
-    0: {
-      x: 0,
-      y: 0,
-      pattern: genArray(1024),
-      palette: [17,26,35,44,53,62,71,80,89,98,107,116,125,134,142],
-      zoom: 4,
-    },
-  }
+  list: [],
+  data: {},
+  listUpdateBy: '',
+  step: -1,
 }
 
 export default function reducer(state = DEFAULT_STATE, action) {
@@ -83,7 +72,7 @@ export default function reducer(state = DEFAULT_STATE, action) {
 
       return {
         ...state,
-        activeIndex: -1,
+        activeIndex: 0,
         list,
         data,
         row,
@@ -91,22 +80,16 @@ export default function reducer(state = DEFAULT_STATE, action) {
         zoom: 4 / ( row > col ? row : col )
       }
 
-    case UPDATE_TITLE:
+    case UPDATE_IMAGE_STATE:
       return {
         ...state,
-        title: action.title,
+        ...action.state,
       }
 
-    case UPDATE_AUTHOR:
+    case UPDATE_STEP:
       return {
         ...state,
-        author: action.author,
-      }
-
-    case UPDATE_TOWN:
-      return {
-        ...state,
-        town: action.town,
+        step: action.step,
       }
 
     default:

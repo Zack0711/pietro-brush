@@ -81,6 +81,9 @@ const ImageConverter = ({onClose}) => {
 
   return (
     <div className="image-converter">
+      <div className="image-converter__preview">
+        <img className="image-converter__input-img" ref={imageElRef} src={imgObj && imgObj.src} />
+      </div>
       <div className="image-converter__tool">
         <label className="image-converter__select-wrap">
           <input
@@ -90,36 +93,35 @@ const ImageConverter = ({onClose}) => {
             ref={inputElRef}
             onChange={handleImgSelect}
           />
-          <IconFont style="folder" />
+          <IconFont style="folder" /> 匯入
         </label>
-        <Button onClick={converImg}>
-          <IconFont style="picture" />
+        <div className="image-converter__crop-count">
+          塊數:  
+          <Select
+            labelId="col-select"
+            value={row}
+            onChange={(e) => setRow(e.target.value)}
+          >
+            <MenuItem value={1}>1</MenuItem>
+            <MenuItem value={2}>2</MenuItem>
+            <MenuItem value={3}>3</MenuItem>
+            <MenuItem value={4}>4</MenuItem>
+          </Select>
+          x
+          <Select
+            labelId="row-select"
+            value={col}
+            onChange={(e) => setCol(e.target.value)}
+          >
+            <MenuItem value={1}>1</MenuItem>
+            <MenuItem value={2}>2</MenuItem>
+            <MenuItem value={3}>3</MenuItem>
+            <MenuItem value={4}>4</MenuItem>
+          </Select>
+        </div>
+        <Button onClick={converImg} disabled={!imgObj}>
+          <IconFont style="crop" /> 裁切
         </Button>
-        Row:  
-        <Select
-          labelId="col-select"
-          value={row}
-          onChange={(e) => setRow(e.target.value)}
-        >
-          <MenuItem value={1}>1</MenuItem>
-          <MenuItem value={2}>2</MenuItem>
-          <MenuItem value={3}>3</MenuItem>
-          <MenuItem value={4}>4</MenuItem>
-        </Select>
-        Col: 
-        <Select
-          labelId="row-select"
-          value={col}
-          onChange={(e) => setCol(e.target.value)}
-        >
-          <MenuItem value={1}>1</MenuItem>
-          <MenuItem value={2}>2</MenuItem>
-          <MenuItem value={3}>3</MenuItem>
-          <MenuItem value={4}>4</MenuItem>
-        </Select>
-      </div>
-      <div className="image-converter__preview">
-        <img className="image-converter__input-img" ref={imageElRef} src={imgObj && imgObj.src} />
       </div>
     </div>
   )

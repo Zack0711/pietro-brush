@@ -2,13 +2,14 @@
 
 .image-converter
   width 100vw
-  height 100vh
+  height 80%
+  max-width 768px
   position relative
-  background white
+  background white  
 
   &__preview
     width 100%
-    height 100%
+    height calc(100% - 48px)
     $display-flex()
 
   &__input-img
@@ -18,7 +19,14 @@
     $display-flex()
   
   &__select-wrap
-    width 48px
+    $display-flex()
+    width 64px
 
   &__select-input
     display none
+  
+  &__crop-count
+    $display-flex()
+    background #f2f0d9
+    border-radius 4px
+    padding 4px 8px

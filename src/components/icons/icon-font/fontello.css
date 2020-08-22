@@ -1,11 +1,11 @@
 @font-face {
   font-family: 'fontello';
-  src: url('./font/fontello.eot?62191690');
-  src: url('./font/fontello.eot?62191690#iefix') format('embedded-opentype'),
-       url('./font/fontello.woff2?62191690') format('woff2'),
-       url('./font/fontello.woff?62191690') format('woff'),
-       url('./font/fontello.ttf?62191690') format('truetype'),
-       url('./font/fontello.svg?62191690#fontello') format('svg');
+  src: url('./font/fontello.eot?84306799');
+  src: url('./font/fontello.eot?84306799#iefix') format('embedded-opentype'),
+       url('./font/fontello.woff2?84306799') format('woff2'),
+       url('./font/fontello.woff?84306799') format('woff'),
+       url('./font/fontello.ttf?84306799') format('truetype'),
+       url('./font/fontello.svg?84306799#fontello') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -15,7 +15,7 @@
 @media screen and (-webkit-min-device-pixel-ratio:0) {
   @font-face {
     font-family: 'fontello';
-    src: url('../font/fontello.svg?62191690#fontello') format('svg');
+    src: url('../font/fontello.svg?84306799#fontello') format('svg');
   }
 }
 */
@@ -38,7 +38,10 @@
  
   /* fix buttons height, for twitter bootstrap */
   line-height: 1em;
-  
+ 
+  /* Animation center compensation - margins should be symmetric */
+  /* remove if not needed */
+ 
   /* you can be more comfortable with increased icons size */
   /* font-size: 120%; */
  
@@ -56,12 +59,14 @@
 .icon-folder:before { content: '\e803'; } /* '' */
 .icon-picture:before { content: '\e804'; } /* '' */
 .icon-archive:before { content: '\e805'; } /* '' */
+.icon-crop:before { content: '\e806'; } /* '' */
+.icon-previous:before { content: '\e807'; } /* '' */
 .icon-palette:before { content: '\e81a'; } /* '' */
 .icon-bucket:before { content: '\e81b'; } /* '' */
 .icon-bucket-all:before { content: '\e81c'; } /* '' */
 .icon-mirror-horizontal:before { content: '\e81d'; } /* '' */
 .icon-mirror-vertical:before { content: '\e81e'; } /* '' */
-.icon-mirror-4:before { content: '\e81f'; } /* '' */
+.icon-mirror-corner:before { content: '\e81f'; } /* '' */
 .icon-heart-l:before { content: '\e820'; } /* '' */
 .icon-heart-m:before { content: '\e821'; } /* '' */
 .icon-heart-s:before { content: '\e822'; } /* '' */
@@ -73,4 +78,5 @@
 .icon-star-m:before { content: '\e828'; } /* '' */
 .icon-star-s:before { content: '\e829'; } /* '' */
 .icon-pigment:before { content: '\e82a'; } /* '' */
+.icon-mirror-no:before { content: '\e82b'; } /* '' */
 .icon-github:before { content: '\f056'; } /* '' */

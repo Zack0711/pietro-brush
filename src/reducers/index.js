@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux'
 
-import pixel from './pixel'
+import author from './author'
 import image from './image'
 
 const rootReducer = combineReducers({
-  pixel,
+  author,
   image,
 })
 

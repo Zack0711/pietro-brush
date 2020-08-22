@@ -27,16 +27,13 @@ const Previewer = props => {
   const zoom = useSelector(getZoom)
 
   useEffect(() => {
-    dispatch(updateActiveIndex(0))
+    if(list.length > 0) {
+    //  dispatch(updateActiveIndex(0))
+    }
   }, [list])
 
   useEffect(() => {
-    dispatch(updateActiveIndex(0))
   }, [])
-
-  useEffect(() => {
-    console.log(col, row)
-  }, [col, row])
 
   return (
     <div className="previewer">
@@ -47,7 +44,7 @@ const Previewer = props => {
       {
         list.map((d, i) => (
           <Block
-            key={`rwo-${d.x}-${d.y}`}
+            key={`rwo-${data[d].x}-${data[d].y}`}
             index={i}
             data = {data[d]}
           />

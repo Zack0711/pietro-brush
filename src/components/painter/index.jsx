@@ -22,6 +22,7 @@ import {
   getActiveIndex,
   getActivePalette,
   getActivePattern,
+  getStep,
 } from '../../selectors/image'
 
 import { colors } from '../../utils/color'
@@ -32,6 +33,10 @@ import {
   drawSticker,
   genArray,
 } from '../../utils/tools'
+
+import {
+  backToPreviousStorage,
+} from '../../utils/storage'
 
 import './index.styl'
 
@@ -57,10 +62,10 @@ const TOOLS = [
 ]
 
 const MIRROR_OPTIONS = [
-  { label: 'mirror-0', key: 'mirror-0', val: 0, icon: 'mirror-horizontal' },
-  { label: 'mirror-1', key: 'mirror-1', val: 1, icon: 'mirror-horizontal' },
-  { label: 'mirror-2', key: 'mirror-2', val: 2, icon: 'mirror-vertical' },
-  { label: 'mirror-3', key: 'mirror-3', val: 3, icon: 'mirror-corner' },
+  { label: '一般', key: 'mirror-0', val: 0, icon: 'mirror-no' },
+  { label: '水平鏡像', key: 'mirror-1', val: 1, icon: 'mirror-horizontal' },
+  { label: '垂直鏡像', key: 'mirror-2', val: 2, icon: 'mirror-vertical' },
+  { label: '對角鏡像', key: 'mirror-3', val: 3, icon: 'mirror-corner' },
 ]
 
 const STAMP_OPTIONS = [
@@ -89,6 +94,7 @@ const Painter = ({screen}) => {
   const pattern = useSelector(getActivePattern)
 
   const activeIndex = useSelector(getActiveIndex)
+  const step = useSelector(getStep)
 
   const [indicatorPos, setIndicatorPos] = useState({ x: 0, y: 0 })
   const [anchorPos, setAnchorPos] = useState({ x: 0, y: 0 })
@@ -102,7 +108,7 @@ const Painter = ({screen}) => {
   const stretcherRef = useRef(null)
   const activeIndexRef = useRef(null)
 
-  const drawPixel = (x, y, paletteIndex, ctx = canvasCtx['pattern'], storeToArray = true) => {
+  const drawPixel = (x, y, paletteIndex, ctx = canvasCtx['pattern'], storeToArray = true, storeToState = true) => {
     if (ctx) {
       const pixelIndex = x + y * 32
       const colorIndex = palette[paletteIndex]
@@ -114,9 +120,9 @@ const Painter = ({screen}) => {
         ctx.clearRect (x*zoom, y*zoom, zoom, zoom)
       }
 
-      if (storeToArray) {
+      if (storeToArray){ 
         pixelsArray[pixelIndex] = paletteIndex
-        dispatch(updatePattern(pixelsArray))
+        if (storeToState) dispatch(updatePattern(pixelsArray))
       }
     }
   }
@@ -126,7 +132,7 @@ const Painter = ({screen}) => {
     return paletteIndex > -1 ? paletteIndex : -1
   }
 
-  const penDraw = (x, y, paletteIndex) => {
+  const penDraw = (x, y, paletteIndex, storeToState = false) => {
     const coordinates = [{ x, y }]
     switch(mirror.val) {
       case 1:
@@ -143,7 +149,7 @@ const Painter = ({screen}) => {
     }
 
     coordinates.forEach( d => {
-      drawPixel(d.x, d.y, paletteIndex)
+      drawPixel(d.x, d.y, paletteIndex, canvasCtx['pattern'], true, storeToState)
     })
   }
 
@@ -155,7 +161,7 @@ const Painter = ({screen}) => {
       const pixelIndex = x + y * 32
       if ( x >= 0 && x <= 31 && y >=0 && y <= 31) {
         if( currentPIndex === getPixelPIndex(pixelIndex)) {
-          drawPixel(x, y, paletteIndex)
+          drawPixel(x, y, paletteIndex, canvasCtx['pattern'], true, false)
           resetPixel(x + 1, y)
           resetPixel(x - 1, y)
           resetPixel(x, y + 1)
@@ -167,6 +173,8 @@ const Painter = ({screen}) => {
     if (currentPIndex !== paletteIndex) {
       resetPixel(x, y)
     }
+
+    drawPixel(x, y, paletteIndex)
   }
 
   const canvasMove = (x, y) => {
@@ -313,7 +321,8 @@ const Painter = ({screen}) => {
   }, [screen])
 
   useEffect(() => {
-    if (activeIndex > -1 && activeIndexRef.current === activeIndex) {
+    if (activeIndex > -1 && pattern) {
+      pixelsArray = pattern
       renderCanvas(pixelsArray, canvasCtx.pattern, false)
     }
   }, [palette])
@@ -336,6 +345,11 @@ const Painter = ({screen}) => {
       }
     } else {
       switch(tool) {
+        case 'pen':
+          if (palette) {
+            penDraw(indicatorPos.x, indicatorPos.y, paletteIndex, true)
+          }
+          break
         case 'line':
           drawLine(
             anchorPos.x, anchorPos.y,
@@ -343,7 +357,8 @@ const Painter = ({screen}) => {
             (x, y) => {coordinates.push({x, y})}
           )
           renderCanvas(previeArray, canvasCtx.preview, false)
-          coordinates.forEach( d => { drawPixel(d.x, d.y, paletteIndex)})
+          coordinates.forEach( d => { drawPixel(d.x, d.y, paletteIndex, canvasCtx['pattern'], true, false)})
+          drawPixel(coordinates[0].x, coordinates[0].y, paletteIndex)
           break
 
         case 'ellipse':
@@ -353,7 +368,8 @@ const Painter = ({screen}) => {
           const h = Math.abs(anchorPos.y - indicatorPos.y)
 
           drawEllipse(cX, cY, w, h, (x ,y) => {coordinates.push({x, y})})
-          coordinates.forEach( d => { drawPixel(d.x, d.y, paletteIndex)})
+          coordinates.forEach( d => { drawPixel(d.x, d.y, paletteIndex, canvasCtx['pattern'], true, false)})
+          drawPixel(coordinates[0].x, coordinates[0].y, paletteIndex)
           break
 
         case 'rect':
@@ -364,7 +380,8 @@ const Painter = ({screen}) => {
           )
 
           renderCanvas(previeArray, canvasCtx.preview, false)
-          coordinates.forEach( d => { drawPixel(d.x, d.y, paletteIndex)})
+          coordinates.forEach( d => { drawPixel(d.x, d.y, paletteIndex, canvasCtx['pattern'], true, false)})
+          drawPixel(coordinates[0].x, coordinates[0].y, paletteIndex)
           break
         case 'stamp':
           drawSticker({
@@ -375,22 +392,28 @@ const Painter = ({screen}) => {
             type: stamp.type,
           })
           renderCanvas(previeArray, canvasCtx.preview, false)
-          coordinates.forEach( d => { drawPixel(d.x, d.y, paletteIndex)})
+          coordinates.forEach( d => { drawPixel(d.x, d.y, paletteIndex, canvasCtx['pattern'], true, false)})
+          drawPixel(coordinates[0].x, coordinates[0].y, paletteIndex)
           break
       }
     }
   }, [isMouseDown])
 
   useEffect(() => {
-    if (activeIndexRef.current !== activeIndex && activeIndex > -1) {
-      pixelsArray = pattern
-      renderCanvas(pattern, canvasCtx.pattern, false)
-    }
     activeIndexRef.current = activeIndex
   }, [activeIndex, pattern])
 
   return (
     <div className="painter">
+      {
+        activeIndex > -1 && (
+          <Palette 
+            className="painter__palette-wrap"
+            pickupColor={pickupColor}
+            paletteIndex={paletteIndex}
+          />
+        )
+      }
       <div className="painter__stretcher-wrap">
         <div className="painter__tool">
           {
@@ -404,6 +427,12 @@ const Painter = ({screen}) => {
               </IconButton>
             ))
           }
+          <IconButton
+            disabled={ step < 1 }
+            onClick={backToPreviousStorage}
+          >
+            P
+          </IconButton>
         </div>
         <div 
           className="painter__stretcher"
@@ -447,23 +476,18 @@ const Painter = ({screen}) => {
             />
           )
         }
-        <Selector 
-          className="painter__mirror-selector"
-          options={MIRROR_OPTIONS}
-          onChange={ item => setMirror(item) }
-          selectedLabel={(<IconFont style={mirror.icon} />)}
-          itemRender={ item => (<IconLabel icon={item.icon} label={item.label} />) }
-        />
+        {
+          tool === 'pen' && (
+            <Selector 
+              className="painter__mirror-selector"
+              options={MIRROR_OPTIONS}
+              onChange={ item => setMirror(item) }
+              selectedLabel={(<IconLabel icon={mirror.icon} label={mirror.label} />)}
+              itemRender={ item => (<IconLabel icon={item.icon} label={item.label} />) }
+            />
+          )
+        }
       </div>
-      {
-        activeIndex > -1 && (
-          <Palette 
-            className="painter__palette-wrap"
-            pickupColor={pickupColor}
-            paletteIndex={paletteIndex}
-          />
-        )
-      }
     </div>
   )
 }
