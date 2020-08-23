@@ -1,4 +1,5 @@
 import isEqual from 'lodash-es/isEqual'
+import * as Sentry from '@sentry/react';
 
 import store from '../store'
 import { updateStep, updateImageState } from '../actions/image'
@@ -22,6 +23,8 @@ const DEFAULT_STATE = {
 let steps = []
 let currentStep = -1
 
+const keyCheck = ['palette', 'pattern', 'x', 'y', 'zoom']
+
 export const readStorage = () => {
   let state
   let storage
@@ -29,7 +32,17 @@ export const readStorage = () => {
   try {
     storage = localStorage.getItem(STORAGE_NAME)
     state = JSON.parse(storage)
+    state.list.forEach( d => {
+      const listData = state.data[d]
+      keyCheck.forEach( key => {
+        if(!listData.hasOwnProperty(key)) {
+          throw Error(`missing key: ${key}`)
+        }
+      })
+    })
   } catch(err) {
+    Sentry.captureException(err)
+    console.log(err)
     parseError = true
   }
 
