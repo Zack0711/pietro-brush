@@ -76,7 +76,8 @@ const TextEditor = ({ onClose }) => {
       ? await embedFont([fontData[fontFamily.value]])
       : []
 
-    const convertTextData = await getTextPatterns(text, fontSize, font)
+    const textString = text.trim().replace(/[\n\r|\n|\r\n|\s]/g, '')
+    const convertTextData = await getTextPatterns(textString, fontSize, font)
 
     const newPatterns = convertTextData.map(d => d.textPattern)
     setPatterns(newPatterns)
