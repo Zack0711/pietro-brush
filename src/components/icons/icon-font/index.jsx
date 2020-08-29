@@ -33,6 +33,9 @@ const FONT_STYLE = {
   github: 'icon-github',
   libary: 'icon-archive',
   'step-back': 'icon-previous',
+  'text-tool': 'icon-text-tool',
+  'text-edit': 'icon-edit-text',
+  'convert-img': 'icon-convert-img',
 }
 
 const FONT_SIZE = {

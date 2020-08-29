@@ -168,7 +168,7 @@ export const EuclideanColorDistance = (c1, c2) => {
     + Math.pow(c1[2] - c2[2], 2))
 }
 
-export const hex2rgb =hex => {
+export const hex2rgb = hex => {
   let rgb = [0, 0, 0]
   let bigInt = parseInt(hex.slice(1), 16)
   rgb[0] = (bigInt >> 16) & 255

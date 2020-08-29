@@ -77,6 +77,26 @@ export const drawSticker = ({x, y, callback, size = 'm', type = 'star'}) => {
   })
 }
 
+export const drawTextPattern = ({ x, y, callback, pattern }) => {
+  const width = Math.sqrt(pattern.length)
+
+  const cx = Math.floor(width / 2)
+  const cy = Math.floor(width / 2)
+
+  const dx = x - cx
+  const dy = y - cy
+
+  pattern.forEach((d, i) => {
+    const px = i % width
+    const py = Math.floor( i / width)
+
+    if( px + dx >=0 &&  py + dy >=0 && px + dx < 32 &&  py + dy < 32 && d < 3 ) {
+      callback(px + dx, py + dy, d)
+    }
+  })
+
+}
+
 export const genArray = (len, init = -1) => {
   const result = []
   for(let i = 0; i < len; i += 1) result.push(init)

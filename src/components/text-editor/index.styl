@@ -1,0 +1,44 @@
+@import '../../mixin'
+
+.text-editor
+  width 60%
+  height 80%
+  min-width 320px
+  max-width 540px
+  position relative
+  background #f2f0d9  
+  $display-flex(column)
+  
+  &--converting
+    &:after
+      content ''
+      display block
+      width 100%
+      height 100%
+      background white
+      opacity 0.8
+      position absolute
+      top 0
+      left 0
+      z-index 5
+  
+  &__setting-wrap
+    margin 8px auto
+
+  &__pattern-wrap
+    $display-flex(row, flex-start)
+    margin 8px auto
+    width 170px
+    flex-wrap wrap
+  
+  &__pattern
+    border 1px solid #fdc0c7
+    
+  &__loader
+    position absolute
+    z-index 10
+    top calc( 50% - 20px )
+    left calc( 50% - 20px )
+    
+  &__tool-wrap
+    margin 8px 0

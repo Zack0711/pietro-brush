@@ -7,5 +7,22 @@ $display-flex(direction=row, justify=center, align=center)
   align-items align
   
 $max-section()
-	max-width 1200px
-	margin 0 auto
+  max-width 1200px
+  margin 0 auto
+
+/* width */
+::-webkit-scrollbar
+  width 4px
+  height 4px
+
+/* Track */
+::-webkit-scrollbar-track
+  background white
+
+/* Handle */
+::-webkit-scrollbar-thumb
+  background $dark_grey
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover
+  background $dark_transparent

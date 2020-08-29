@@ -4,6 +4,7 @@ import RgbQuant from 'rgbquant'
 import {
   deltaE,
   rgb2lab,
+  hex2rgb,
   colorsPalette,
 } from './color'
 
@@ -118,7 +119,6 @@ const pickNearestColorFromPalette = (color, palette) => {
 const pickNearestColorIndexFromPalette = (color, palette) => {
   let minDistance = Number.MAX_VALUE
   let pickedIndex = -1
-
   palette.forEach( (d, i) => {
     const distance = deltaE(rgb2lab(color), rgb2lab(d))
     if (distance < minDistance) {
@@ -128,6 +128,37 @@ const pickNearestColorIndexFromPalette = (color, palette) => {
   })
 
   return pickedIndex
+}
+
+export const pickTopNearestColorIndexFromPalette = (color, palette, top = 3) => {
+  const topResult = []
+
+  palette.forEach( (d, i) => {
+    let distance = deltaE(rgb2lab(hex2rgb(color)), rgb2lab(hex2rgb(d)))
+    let index = i
+
+    for(let j = 0; j < top; j += 1) {
+      if(!topResult[j]) {
+        topResult[j] = {
+          index: -1,
+          distance: Number.MAX_VALUE
+        }
+      }
+
+      if (distance < topResult[j].distance) {
+        const rDistance = topResult[j].distance
+        const rIndex = topResult[j].index
+        topResult[j] = {
+          distance,
+          index
+        }
+        distance = rDistance
+        index = rIndex
+      }
+    }
+  })
+
+  return topResult.map(d => d.index) 
 }
 
 export const convert2PaletteColor = (colorArray, palette) => {
@@ -149,11 +180,21 @@ export const convert2PaletteIndex = (colorArray, palette) => {
   return convertData  
 }
 
+const rgba2rgb = (color, background = [255, 255, 255]) => {
+  const alpha = color[3] / 255
+  return [
+    (1 - alpha)*background[0] + alpha*color[0],
+    (1 - alpha)*background[1] + alpha*color[1],
+    (1 - alpha)*background[2] + alpha*color[2],
+  ]
+}
+
 export const converImageData = (imageData, palette) => {
   let convertData = new Array()
-  //console.log(imageData, palette)
   for (let i = 0; i < imageData.data.length; i += 4) {
-    convertData.push(pickNearestColorFromPalette(imageData.data.slice(i, i + 3), palette))
+    const rgbColor = rgba2rgb(imageData.data.slice(i, i + 4))
+    convertData.push(pickNearestColorIndexFromPalette(rgbColor, palette))
+    //convertData.push(pickNearestColorFromPalette(imageData.data.slice(i, i + 3), palette))
   }
   return convertData
 }

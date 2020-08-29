@@ -45,7 +45,6 @@ const Editor = props => {
 
   useEffect(() => {
     const state = readStorage()
-    console.log(state)
     dispatch(updateImageState(state))
   }, [])
 

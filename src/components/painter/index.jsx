@@ -5,6 +5,7 @@ import classNames from 'classnames'
 
 import Button from '@material-ui/core/Button'
 import IconButton from '@material-ui/core/IconButton'
+import Modal from '@material-ui/core/Modal'
 
 import { IconFont } from '../icons'
 import Selector from '../selector'
@@ -13,6 +14,9 @@ import Pattern from './pattern'
 import Palette from './palette'
 import StampSelector from './stamp-selector'
 import IconLabel from './icon-label'
+
+import TextPattern from '../text-pattern'
+import TextEditor from '../text-editor'
 
 import {
   updatePattern,
@@ -25,14 +29,23 @@ import {
   getStep,
 } from '../../selectors/image'
 
+import {
+  getPatterns as getTextPatterns,
+} from '../../selectors/text'
+
 import { colors } from '../../utils/color'
 import { 
   drawLine,
   drawEllipse,
   drawRect,
   drawSticker,
+  drawTextPattern,
   genArray,
 } from '../../utils/tools'
+
+import {
+  pickTopNearestColorIndexFromPalette,
+} from '../../utils/image'
 
 import {
   backToPreviousStorage,
@@ -59,6 +72,7 @@ const TOOLS = [
   { label: 'rect', key: 'rect', val: 'rect', icon: 'rect'  },
   { label: 'line', key: 'line', val: 'line', icon: 'line'  },
   { label: 'move', key: 'move', val: 'move', icon: 'move'  },
+  { label: 'text', key: 'text', val: 'text', icon: 'text-tool'  },
 ]
 
 const MIRROR_OPTIONS = [
@@ -96,14 +110,21 @@ const Painter = ({screen}) => {
   const activeIndex = useSelector(getActiveIndex)
   const step = useSelector(getStep)
 
+  const textPatterns = useSelector(getTextPatterns)
+
   const [indicatorPos, setIndicatorPos] = useState({ x: 0, y: 0 })
   const [anchorPos, setAnchorPos] = useState({ x: 0, y: 0 })
 
   const [paletteIndex, setPaletteIndex] = useState(0)
+  const [topPaletteIndex, setTopPaletteIndex] = useState([0,1,2,3])
+
   const [isMouseDown, setIsMouseDown] = useState(false)
   const [stamp, setStamp] = useState({size: 'm', type: 'star'})
   const [tool, setTool] = useState(TOOLS[0].val)
   const [mirror, setMirror] = useState(MIRROR_OPTIONS[0])
+
+  const [textPatternIndex, setTextPatternIndex] = useState(0)
+  const [textEditorOpen, setTextEditorOpen] = useState(false)
 
   const stretcherRef = useRef(null)
   const activeIndexRef = useRef(null)
@@ -305,15 +326,38 @@ const Painter = ({screen}) => {
       renderCanvas(pArray, canvasCtx.preview, false)
     }
 
+    if ( tool === 'text') {
+      pArray = [...previeArray]
+      drawTextPattern({
+        x: coordinate.x,
+        y: coordinate.y,
+        callback: (x, y, index) => {
+          const pixelIndex = x + y * 32
+          if(index < 4) {
+            pArray[pixelIndex] = topPaletteIndex[index]
+          }
+        },
+        pattern: textPatterns[textPatternIndex],
+      })
+      renderCanvas(pArray, canvasCtx.preview, false)
+    }
+
   }
 
   const pickupColor = pIndex => {
+    const color = colors[palette[pIndex]][0]
+    const paletteColor = palette.map(d => colors[d][0])
+    setTopPaletteIndex(pickTopNearestColorIndexFromPalette(color, paletteColor))
     setPaletteIndex(pIndex)
   }
 
   const onPatternHover = (patternRef, previewRef) => {
     canvasCtx.pattern = patternRef.current.getContext('2d')
     canvasCtx.preview = previewRef.current.getContext('2d')
+  }
+
+  const handleTextEditorClose = () => {
+    setTextEditorOpen(false)
   }
 
   useEffect(() => {
@@ -395,6 +439,25 @@ const Painter = ({screen}) => {
           coordinates.forEach( d => { drawPixel(d.x, d.y, paletteIndex, canvasCtx['pattern'], true, false)})
           drawPixel(coordinates[0].x, coordinates[0].y, paletteIndex)
           break
+
+        case 'text':
+          drawTextPattern({
+            x: indicatorPos.x,
+            y: indicatorPos.y,
+            callback: (x, y, index) => {
+              if(index < 4) {
+                coordinates.push({x, y, index})
+                //pArray[pixelIndex] = topPaletteIndex[d]
+              }
+            },
+            pattern: textPatterns[textPatternIndex],
+          })
+
+          renderCanvas(previeArray, canvasCtx.preview, false)
+          coordinates.forEach( d => { 
+            drawPixel(d.x, d.y, topPaletteIndex[d.index], canvasCtx['pattern'], true, false)
+          })
+          drawPixel(coordinates[0].x, coordinates[0].y, topPaletteIndex[coordinates[0].index])
       }
     }
   }, [isMouseDown])
@@ -487,9 +550,42 @@ const Painter = ({screen}) => {
                 />
               )
             }
+            {
+              tool === 'text' && (
+                <div className="painter__text-tool">
+                  <IconButton
+                    onClick={() => setTextEditorOpen(true)}
+                  >
+                    <IconFont style="text-edit" />
+                  </IconButton>
+                  <div className="painter__text-patterns">
+                    {
+                      textPatterns.map((d,i) => (
+                        <IconButton
+                          onClick={ () => setTextPatternIndex(i) }
+                          color={ textPatternIndex === i ? 'primary' : 'default' }
+                        >
+                          <TextPattern pattern={d} size={28} />
+                        </IconButton>
+                      ))                      
+                    }
+                  </div>
+                </div>
+              )
+            }
           </div>
         </div>
       </div>
+      <Modal
+        open={textEditorOpen}
+        onClose={handleTextEditorClose}
+        className="editor__modal"
+        keepMounted={true}
+      >
+        <TextEditor
+          onClose={handleTextEditorClose}
+        />
+      </Modal>
     </div>
   )
 }

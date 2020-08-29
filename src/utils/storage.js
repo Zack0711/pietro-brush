@@ -17,7 +17,7 @@ const DEFAULT_STATE = {
       y: 0,
       zoom: 4,
     }
-  }
+  },
 }
 
 let steps = []
