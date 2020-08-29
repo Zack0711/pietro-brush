@@ -9,13 +9,13 @@ import MenuItem from '@material-ui/core/MenuItem'
 
 import { IconFont } from '../../icons'
 
-import { updatePalette } from '../../../actions/image'
+import { updatePalette, updateColorSeriePalette } from '../../../actions/image'
 import { colors } from '../../../utils/color'
 
 import './index.styl'
 
 const COLOR_GREY = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
-const COLOR_INDEX = [0, 1, 2, 3, 4, 5, 6, 7]
+const COLOR_INDEX = [0, 1, 2, 3, 4, 5, 6, 7, 8]
 const COLOR_SERIES = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
 
 const ColorPalette = ({paletteIndex}) => {
@@ -33,6 +33,12 @@ const ColorPalette = ({paletteIndex}) => {
 
   const handlePaletteColorChange = colorIndex => {
     dispatch(updatePalette(paletteIndex, colorIndex))
+    handleClose()
+  }
+
+  const handlePaletteColorSetChange = serieIndex => {
+    const colorSerie = COLOR_INDEX.map( i => 15 + i + serieIndex*9)
+    dispatch(updateColorSeriePalette(colorSerie))
     handleClose()
   }
 
@@ -75,6 +81,12 @@ const ColorPalette = ({paletteIndex}) => {
                     />
                   ))
                 }
+                <div 
+                  onClick = {() => handlePaletteColorSetChange(d)}
+                  style={{ color: `${colors[15 + 3 + d*9][0]}` }}
+                >
+                  <IconFont style="palette" size="s" />
+                </div>
               </div>
             ))
           }

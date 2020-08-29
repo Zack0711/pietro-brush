@@ -367,6 +367,11 @@ const Painter = ({screen}) => {
   useEffect(() => {
     if (activeIndex > -1 && pattern) {
       pixelsArray = pattern
+
+      const color = colors[palette[paletteIndex]][0]
+      const paletteColor = palette.map(d => colors[d][0])
+      setTopPaletteIndex(pickTopNearestColorIndexFromPalette(color, paletteColor))
+
       renderCanvas(pixelsArray, canvasCtx.pattern, false)
     }
   }, [palette])

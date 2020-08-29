@@ -75,3 +75,13 @@ body {
   font-family: 'font-aoyagireisho';
   src: url('./font/aoyagireisyosimo_ttf_2_01.woff?59488976') format('woff');
 }
+
+@font-face {
+  font-family: 'font-seto';
+  src: url('./font/sp-setofont.woff?59488976') format('woff');
+}
+
+@font-face {
+  font-family: 'font-jf-openhuninn';
+  src: url('./font/jf-openhuninn-11.woff?59488976') format('woff');
+}

@@ -13,6 +13,12 @@ export const updatePalette = (paletteIndex, colorIndex) => ({
   colorIndex,
 })
 
+export const UPDATE_COLOR_SERIE_PALETTE = 'UPDATE_COLOR_SERIE_PALETTE'
+export const updateColorSeriePalette = (colorSerie) => ({
+  type: UPDATE_COLOR_SERIE_PALETTE,
+  colorSerie,
+})
+
 export const UPDATE_ACTIVE_INDEX = 'UPDATE_ACTIVE_INDEX'
 export const updateActiveIndex = (index) => ({
   type: UPDATE_ACTIVE_INDEX,

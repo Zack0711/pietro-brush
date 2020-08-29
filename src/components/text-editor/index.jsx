@@ -24,17 +24,27 @@ import { IconFont } from '../icons'
 
 import './index.styl'
 
-const DEFAULT_TEXT = '像極了愛情'
+const DEFAULT_TEXT = '皮耶羅筆刷'
 const FONT_SIZES = [16, 18, 20, 22, 24, 28]
 
 const fontFamilyOptions = [
   { value: null, label: '系統字體'}, 
+  { value: 'font-seto', label: '瀨戶字體'},
+  { value: 'font-jf-openhuninn', label: '粉圓體'},
   { value: 'font-kouzansousho', label: '青柳草書'},
   { value: 'font-aoyagireisho', label: '青柳隷書'},
   { value: 'font-hdzb', label: '篆體'},
 ]
 
 const fontData = {
+  'font-seto': {
+    name: 'font-seto',
+    url: 'font/sp-setofont.woff',
+  },
+  'font-jf-openhuninn': {
+    name: 'font-jf-openhuninn',
+    url: 'font/jf-openhuninn-11.woff',
+  },
   'font-hdzb': {
     name: 'font-hdzb',
     url: 'font/zhuanti.woff',
@@ -53,7 +63,7 @@ const TextEditor = ({ onClose }) => {
   const dispatch = useDispatch()
 
   const [text, setText] = useState(DEFAULT_TEXT)
-  const [fontSize, setFontSize] = useState(16)
+  const [fontSize, setFontSize] = useState(FONT_SIZES[3])
   const [fontFamily, setFontFamily] = useState(fontFamilyOptions[0])
   const [isConverting, setIsConverting] = useState(false)
 
@@ -141,8 +151,8 @@ const TextEditor = ({ onClose }) => {
       </div>
       <div className="text-editor__pattern-wrap">
         {
-          patterns.map(pattern => (
-            <TextPattern pattern={pattern} className="text-editor__pattern" />
+          patterns.map((pattern, i) => (
+            <TextPattern key={`pattern-${i}`} pattern={pattern} className="text-editor__pattern" />
           ))
         }
       </div>

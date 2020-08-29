@@ -1,6 +1,7 @@
 import {
   UPDATE_PATTERN,
   UPDATE_PALETTE,
+  UPDATE_COLOR_SERIE_PALETTE,
   UPDATE_ACTIVE_INDEX,
   UPDATE_DATA_AND_LIST,
   UPDATE_IMAGE_STATE,
@@ -38,11 +39,12 @@ export default function reducer(state = DEFAULT_STATE, action) {
       const palette = [...state.data[state.activeIndex].palette]
       const { paletteIndex, colorIndex } = action
 
+      /*
       const currentPaletteIndex = palette.indexOf(colorIndex)
-
       if (currentPaletteIndex > -1 && currentPaletteIndex !== paletteIndex) {
         palette[currentPaletteIndex] = palette[paletteIndex]
       }
+      */
       palette[paletteIndex] = colorIndex
 
       return {
@@ -52,6 +54,21 @@ export default function reducer(state = DEFAULT_STATE, action) {
           [state.activeIndex]: {
             ...state.data[state.activeIndex],
             palette,
+          }
+        },
+      }
+
+    case UPDATE_COLOR_SERIE_PALETTE:
+      const newPalette = [...action.colorSerie, ...state.data[state.activeIndex].palette.slice(9)]
+      console.log(newPalette)
+
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          [state.activeIndex]: {
+            ...state.data[state.activeIndex],
+            palette: newPalette,
           }
         },
       }

@@ -19,6 +19,8 @@ import { IconFont } from '../icons'
 
 import { updateDataAndList, updateActiveIndex } from '../../actions'
 
+import { getActivePalette } from '../../selectors/image'
+
 import { 
   colorsPalette,
 } from '../../utils/color'
@@ -32,6 +34,8 @@ import './index.styl'
 
 const ImageConverter = ({onClose}) => {
   const dispatch = useDispatch()
+
+  const palette = useSelector(getActivePalette)
 
   const inputElRef = useRef(null)
   const imageElRef = useRef(null)
@@ -48,10 +52,12 @@ const ImageConverter = ({onClose}) => {
   }
 
   const converImg = async (e) => {
+    const img = imgObj ? cropperRef.current.getCroppedCanvas() : null
     const {
       list,
       data,
-    } = imageQuantize(cropperRef.current.getCroppedCanvas(), row, col)
+    } = imageQuantize(img, row, col, palette)
+
     dispatch(updateDataAndList(list, data, row, col))
     onClose()
   }
@@ -111,7 +117,6 @@ const ImageConverter = ({onClose}) => {
             labelId="col-select"
             value={row}
             onChange={(e) => setRow(e.target.value)}
-            disabled={!imgObj}
           >
             <MenuItem value={1}>1</MenuItem>
             <MenuItem value={2}>2</MenuItem>
@@ -123,7 +128,6 @@ const ImageConverter = ({onClose}) => {
             labelId="row-select"
             value={col}
             onChange={(e) => setCol(e.target.value)}
-            disabled={!imgObj}
           >
             <MenuItem value={1}>1</MenuItem>
             <MenuItem value={2}>2</MenuItem>
@@ -131,7 +135,7 @@ const ImageConverter = ({onClose}) => {
             <MenuItem value={4}>4</MenuItem>
           </Select>
         </div>
-        <Button onClick={converImg} disabled={!imgObj}>
+        <Button onClick={converImg}>
           <IconFont style="crop" /> 裁切
         </Button>
       </div>

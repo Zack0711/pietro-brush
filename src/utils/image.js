@@ -8,6 +8,8 @@ import {
   colorsPalette,
 } from './color'
 
+import { genArray } from './tools'
+
 export const readImage = file => new Promise((resolve, reject) => {
   const reader = new FileReader()
   reader.onload = (e) => {
@@ -216,30 +218,38 @@ const opts = {
   colorDist: "euclidean",  // method used to determine color distance, can also be "manhattan"
 }
 
-export const imageQuantize = (img, row, col) => {
+const DEFAULT_PALETTE = [17, 26, 35, 44, 53, 62, 71, 80, 89, 98, 107, 116, 125, 134, 142]
+
+export const imageQuantize = (img, row, col, activePalette = DEFAULT_PALETTE) => {
   const list = []
   const data = {}
 
   let index = 0
 
-  const dx = img.width / col
-  const dy = img.height / row
+  const dx = img ? img.width / col : 0
+  const dy = img ? img.height / row : 0
 
   const zoom = 4 / ( row > col ? row : col )
 
   for( let i = 0; i < row; i += 1) {
     for (let j = 0; j < col; j +=1 ) {
-      const canvas = document.createElement('CANVAS')
-      const ctx = canvas.getContext('2d')
-      const q = new RgbQuant(opts)
 
-      canvas.width = 32
-      canvas.height = 32
-      ctx.drawImage(img, dx*j, dy*i, dx, dy, 0, 0, 32, 32)
-      q.sample(ctx)
+      let pattern = genArray(1024)
+      let palette = [...activePalette]
 
-      const palette = convert2PaletteIndex(q.palette(true), colorsPalette)
-      const pattern = q.reduce(ctx, 2)
+      if (img) {
+        const canvas = document.createElement('CANVAS')
+        const ctx = canvas.getContext('2d')
+        const q = new RgbQuant(opts)
+
+        canvas.width = 32
+        canvas.height = 32
+        ctx.drawImage(img, dx*j, dy*i, dx, dy, 0, 0, 32, 32)
+        q.sample(ctx)
+
+        palette = convert2PaletteIndex(q.palette(true), colorsPalette)
+        pattern = q.reduce(ctx, 2)
+      }
 
       list.push(index)
       data[index] = {
