@@ -345,9 +345,11 @@ const Painter = ({screen}) => {
   }
 
   const pickupColor = pIndex => {
-    const color = colors[palette[pIndex]][0]
-    const paletteColor = palette.map(d => colors[d][0])
-    setTopPaletteIndex(pickTopNearestColorIndexFromPalette(color, paletteColor))
+    if (pIndex > 0) {
+      const color = colors[palette[pIndex]][0]
+      const paletteColor = palette.map(d => colors[d][0])
+      setTopPaletteIndex(pickTopNearestColorIndexFromPalette(color, paletteColor))      
+    }
     setPaletteIndex(pIndex)
   }
 

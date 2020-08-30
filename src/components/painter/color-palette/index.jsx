@@ -47,7 +47,7 @@ const ColorPalette = ({paletteIndex}) => {
 
   return (
     <div className="color-palette">
-      <Button onClick={handleBtnClick}>
+      <Button onClick={handleBtnClick} disabled={paletteIndex === -1}>
         <IconFont style="pigment" />
       </Button>
       <Menu
