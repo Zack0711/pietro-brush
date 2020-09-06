@@ -7,12 +7,14 @@ import { colors } from '../../../utils/color'
 
 import './index.styl'
 
-const Pattern = ({ zoom, hoverCallBack }) => {
+const Pattern = ({ zoom, hoverCallBack, showPreview }) => {
   const canvasRef = useRef(null)
   const previewRef = useRef(null)
 
   const handleMouseOver = () => {
-    //hoverCallBack(canvasRef, previewRef)
+  }
+
+  const handleMouseOut = () => {
   }
 
   useEffect(() => {
@@ -22,7 +24,7 @@ const Pattern = ({ zoom, hoverCallBack }) => {
   },[canvasRef, previewRef])
 
   return (
-    <div className="pattern" onMouseEnter={handleMouseOver}>
+    <div className="pattern">
       <canvas 
         ref={canvasRef} 
         width={32 * zoom}
@@ -30,7 +32,7 @@ const Pattern = ({ zoom, hoverCallBack }) => {
       />
       <canvas 
         ref={previewRef} 
-        className="pattern__preview"
+        className={classNames('pattern__preview', {'pattern__preview--hide': !showPreview })}
         width={32 * zoom}
         height={32 * zoom}
       />

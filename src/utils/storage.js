@@ -37,6 +37,8 @@ export const readStorage = () => {
       keyCheck.forEach( key => {
         if(!listData.hasOwnProperty(key)) {
           throw Error(`missing key: ${key}`)
+        } else if ( key === 'pattern' && listData['pattern'].length > 1024) {
+          listData['pattern'] = listData['pattern'].slice(0, 1024)
         }
       })
     })

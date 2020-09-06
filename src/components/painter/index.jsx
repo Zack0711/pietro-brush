@@ -119,6 +119,7 @@ const Painter = ({screen}) => {
   const [topPaletteIndex, setTopPaletteIndex] = useState([0,1,2,3])
 
   const [isMouseDown, setIsMouseDown] = useState(false)
+  const [inActiveRange, setInActiveRange] = useState(false)
   const [stamp, setStamp] = useState({size: 'm', type: 'star'})
   const [tool, setTool] = useState(TOOLS[0].val)
   const [mirror, setMirror] = useState(MIRROR_OPTIONS[0])
@@ -235,11 +236,10 @@ const Painter = ({screen}) => {
     }
   }
 
-  const handleStretcherPosiion = (clientX, clientY) => {
-    const stretcherRect = stretcherRef.current.getBoundingClientRect()
+  const handleStretcherPosiion = (x, y) => {
     const coordinate = {
-      x: Math.floor((clientX - stretcherRect.x)/zoom),
-      y: Math.floor((clientY - stretcherRect.y)/zoom),      
+      x: Math.floor(x/zoom),
+      y: Math.floor(y/zoom),
     }
 
     setIndicatorPos(coordinate)
@@ -255,93 +255,112 @@ const Painter = ({screen}) => {
     setIsMouseDown(false)
   }
 
-  const handleMouseTouchMove = (clientX, clientY) => {
-    const stretcherRect = stretcherRef.current.getBoundingClientRect()
-    const coordinate = handleStretcherPosiion(clientX, clientY)
+  const handleMouseTouchMove = (e) => {
+    const {
+      top, 
+      left, 
+      bottom, 
+      right,
+      x,
+      y,
+    } = stretcherRef.current.getBoundingClientRect()
 
+    const {
+      clientX,
+      clientY
+    } = ( e.clientX ? e : e.touches[0] )
+
+    const inActiveRange = (clientX >= left && clientX <= right) && (clientY >= top && clientY <= bottom)
     let pArray = []
 
-    if (isMouseDown) {
-      switch(tool) {
-        case 'pen':
-          penDraw(coordinate.x, coordinate.y, paletteIndex)
-          break
-        case 'move':
-          canvasMove(coordinate.x, coordinate.y)
-          break
-        case 'line':
-          pArray = [...previeArray]
-          drawLine(
-            anchorPos.x, anchorPos.y,
-            indicatorPos.x, indicatorPos.y,
-            (x, y) => {
+    setInActiveRange(inActiveRange)
+
+    if (inActiveRange) {
+
+      const coordinate = handleStretcherPosiion(clientX - x, clientY - y)
+
+      if (isMouseDown) {
+        switch(tool) {
+          case 'pen':
+            penDraw(coordinate.x, coordinate.y, paletteIndex)
+            break
+          case 'move':
+            canvasMove(coordinate.x, coordinate.y)
+            break
+          case 'line':
+            pArray = [...previeArray]
+            drawLine(
+              anchorPos.x, anchorPos.y,
+              indicatorPos.x, indicatorPos.y,
+              (x, y) => {
+                const pixelIndex = x + y * 32
+                pArray[pixelIndex] = paletteIndex
+              }
+            )
+            renderCanvas(pArray, canvasCtx.preview, false)
+            break
+          case 'ellipse': 
+            pArray = [...previeArray]
+            const cX = (anchorPos.x + indicatorPos.x) / 2
+            const cY = (anchorPos.y + indicatorPos.y) / 2
+            const w = Math.abs(anchorPos.x - indicatorPos.x)
+            const h = Math.abs(anchorPos.y - indicatorPos.y)
+
+            drawEllipse(cX, cY, w, h, (x ,y) => {
               const pixelIndex = x + y * 32
               pArray[pixelIndex] = paletteIndex
-            }
-          )
-          renderCanvas(pArray, canvasCtx.preview, false)
-          break
-        case 'ellipse': 
-          pArray = [...previeArray]
-          const cX = (anchorPos.x + indicatorPos.x) / 2
-          const cY = (anchorPos.y + indicatorPos.y) / 2
-          const w = Math.abs(anchorPos.x - indicatorPos.x)
-          const h = Math.abs(anchorPos.y - indicatorPos.y)
+            })
 
-          drawEllipse(cX, cY, w, h, (x ,y) => {
-            const pixelIndex = x + y * 32
-            pArray[pixelIndex] = paletteIndex
-          })
+            renderCanvas(pArray, canvasCtx.preview, false)
+            break
+          case 'rect':
+            pArray = [...previeArray]
+            drawRect(
+              anchorPos.x, anchorPos.y,
+              indicatorPos.x, indicatorPos.y,
+              (x, y) => {
+                const pixelIndex = x + y * 32
+                pArray[pixelIndex] = paletteIndex
+              }
+            )
 
-          renderCanvas(pArray, canvasCtx.preview, false)
-          break
-        case 'rect':
-          pArray = [...previeArray]
-          drawRect(
-            anchorPos.x, anchorPos.y,
-            indicatorPos.x, indicatorPos.y,
-            (x, y) => {
-              const pixelIndex = x + y * 32
-              pArray[pixelIndex] = paletteIndex
-            }
-          )
-
-          renderCanvas(pArray, canvasCtx.preview, false)
-          break
+            renderCanvas(pArray, canvasCtx.preview, false)
+            break
+        }
       }
-    }
 
-    if (tool === 'stamp') {
-      pArray = [...previeArray]
-      drawSticker({
-        x: coordinate.x,
-        y: coordinate.y,
-        callback: (x, y) => {
-          const pixelIndex = x + y * 32
-          pArray[pixelIndex] = paletteIndex          
-        },
-        size: stamp.size,
-        type: stamp.type,
-      })
-      renderCanvas(pArray, canvasCtx.preview, false)
-    }
+      if (tool === 'stamp') {
+        pArray = [...previeArray]
+        drawSticker({
+          x: coordinate.x,
+          y: coordinate.y,
+          callback: (x, y) => {
+            const pixelIndex = x + y * 32
+            pArray[pixelIndex] = paletteIndex          
+          },
+          size: stamp.size,
+          type: stamp.type,
+        })
+        renderCanvas(pArray, canvasCtx.preview, false)
+      }
 
-    if ( tool === 'text') {
-      pArray = [...previeArray]
-      drawTextPattern({
-        x: coordinate.x,
-        y: coordinate.y,
-        callback: (x, y, index) => {
-          const pixelIndex = x + y * 32
-          if(index < 4) {
-            pArray[pixelIndex] = topPaletteIndex[index]
-          }
-        },
-        pattern: textPatterns[textPatternIndex],
-      })
-      renderCanvas(pArray, canvasCtx.preview, false)
-    }
+      if ( tool === 'text') {
+        pArray = [...previeArray]
+        drawTextPattern({
+          x: coordinate.x,
+          y: coordinate.y,
+          callback: (x, y, index) => {
+            const pixelIndex = x + y * 32
+            if(index < 4) {
+              pArray[pixelIndex] = topPaletteIndex[index]
+            }
+          },
+          pattern: textPatterns[textPatternIndex],
+        })
+        renderCanvas(pArray, canvasCtx.preview, false)
+      }
 
+    }
   }
 
   const pickupColor = pIndex => {
@@ -474,7 +493,11 @@ const Painter = ({screen}) => {
   }, [activeIndex, pattern])
 
   return (
-    <div className="painter">
+    <div 
+      className="painter" 
+      onTouchMove={handleMouseTouchMove}
+      onMouseMove={handleMouseTouchMove}
+    >
       {
         activeIndex > -1 && (
           <Palette 
@@ -508,20 +531,18 @@ const Painter = ({screen}) => {
           <div 
             className="painter__stretcher"
             onTouchStart={ e => handleMouseTouchDown(e.touches[0].clientX, e.touches[0].clientY)}
-            onTouchMove={ e => handleMouseTouchMove(e.touches[0].clientX, e.touches[0].clientY)}
             onTouchEnd={handleMouseTouchUp}
-
             onMouseDown={e => handleMouseTouchDown(e.clientX, e.clientY)}
             onMouseUp={handleMouseTouchUp}
-            onMouseMove={ e => handleMouseTouchMove(e.clientX, e.clientY)}
             ref={stretcherRef}
           >
             <Pattern
               zoom={zoom}
               hoverCallBack={onPatternHover}
+              showPreview={inActiveRange}
             />
             {
-              ( tool !== 'line' && activeIndex > -1 ) && (
+              ( tool !== 'line' && activeIndex > -1 && inActiveRange ) && (
                 <div 
                   className="painter__indicator"
                   style={{
