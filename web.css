@@ -348,6 +348,9 @@ body {
   top: 0;
   left: 0;
 }
+.pattern__preview--hide {
+  opacity: 0;
+}
 
 ::-webkit-scrollbar {
   width: 4px;

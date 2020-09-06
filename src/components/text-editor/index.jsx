@@ -77,9 +77,8 @@ const TextEditor = ({ onClose }) => {
       : []
 
     const textString = text.trim().replace(/[\n\r|\n|\r\n|\s]/g, '')
-    const convertTextData = await getTextPatterns(textString, fontSize, font)
+    const newPatterns = await getTextPatterns(textString, fontSize, font)
 
-    const newPatterns = convertTextData.map(d => d.textPattern)
     setPatterns(newPatterns)
     if (update) {
       dispatch(updatePatterns(newPatterns))      

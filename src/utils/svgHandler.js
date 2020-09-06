@@ -14,7 +14,6 @@ export const getSVGBlob = (svgNode) => {
 
   const svgBlob = new Blob([svgString], { type: "image/svg+xml" })
   return svgBlob
-  //return URL.createObjectURL(svgBlob)
 }
 
 export const blobToBase64 = blob => new Promise( async (resolve, reject) =>{
@@ -62,27 +61,16 @@ export const embedFont = (fonts=[]) => {
 
 const DEFAULT_FONT_FAMILY = '"Noto Sans", Roboto, Helvetica, Arial, sans-serif'
 
-export const creatSVGNode = async (text, size = 16, font = [] ) => {
+export const creatSVGNode = async (text, size, font) => {
   const svgns = 'http://www.w3.org/2000/svg'
-
-//  const fontData = await embedFont([font])
-
-//  console.log(font)
-//  console.log(fontData)
 
   const svgEl = document.createElementNS(svgns, 'svg')
   const defEl = document.createElementNS(svgns, 'defs')
-  const groupEl = document.createElementNS(svgns, 'g')
-  const textEl = document.createElementNS(svgns, 'text')
+  const rootEl = document.createElementNS(svgns, 'g')
 
-  svgEl.setAttributeNS(null, 'viewBox', `0 0 ${size} ${size}`)
-  svgEl.setAttributeNS(null, 'width', `${size}px`)
+  svgEl.setAttributeNS(null, 'viewBox', `0 0 ${size * text.length} ${size}`)
+  svgEl.setAttributeNS(null, 'width', `${size * text.length}px`)
   svgEl.setAttributeNS(null, 'height', `${size}px`)
-
-/*
-      allStyleTags = svgDefs.selectAll('style').data(fontDataArray);
-      allStyleTags.enter().append('style').attr('type', 'text/css');
-*/
 
   if (font.length > 0) {
     font.forEach( d => {
@@ -93,27 +81,34 @@ export const creatSVGNode = async (text, size = 16, font = [] ) => {
     })
   }
 
-  groupEl.setAttributeNS(null, 'x', size/2)
-  groupEl.setAttributeNS(null, 'y', size/2)
-  groupEl.setAttributeNS(null, 'font-size', size)
-  groupEl.setAttributeNS(null, 'font-family', font[0] ? font[0].name : DEFAULT_FONT_FAMILY)
-
-  textEl.setAttributeNS(null, 'dominant-baseline', 'text-before-edge')
-  textEl.setAttributeNS(null, 'text-anchor', 'start')
-  textEl.textContent = text
-
-  groupEl.appendChild(textEl)
-
   svgEl.appendChild(defEl)
-  svgEl.appendChild(groupEl)
+
+  for(let i = 0; i < text.length; i += 1){
+    const groupEl = document.createElementNS(svgns, 'g')
+    const textEl = document.createElementNS(svgns, 'text')
+
+    groupEl.setAttributeNS(null, 'transform', `translate(${size*i}, 0)`)
+    groupEl.setAttributeNS(null, 'font-size', size)
+    groupEl.setAttributeNS(null, 'font-family', font[0] ? font[0].name : DEFAULT_FONT_FAMILY)
+
+    textEl.setAttributeNS(null, 'dominant-baseline', 'text-before-edge')
+    textEl.setAttributeNS(null, 'text-anchor', 'start')
+    textEl.textContent = text[i]
+
+    groupEl.appendChild(textEl)
+    rootEl.appendChild(groupEl)
+
+  }
+
+  svgEl.appendChild(rootEl)
 
   return svgEl
 }
 
 const GREY_PALETTE = [[0, 0, 0], [85, 85, 85], [170, 170, 170], [255, 255, 255]]
 
-export const convertTextPattern = (character, size = 24, font) => new Promise( async (resolve, reject) => {
-  const svgNode = await creatSVGNode(character, size, font)
+export const convertTextPattern = (text, size = 24, font) => new Promise( async (resolve, reject) => {
+  const svgNode = await creatSVGNode(text, size, font)
 
   const blob = getSVGBlob(svgNode)
   const base64 = await blobToBase64(blob)
@@ -123,24 +118,27 @@ export const convertTextPattern = (character, size = 24, font) => new Promise( a
   const image = new Image()
 
   image.onload = () => {
-    ctx.canvas.width = size
+    ctx.canvas.width = size * text.length
     ctx.canvas.height = size
-    ctx.drawImage(image, 0, 0, size, size)
-    const imageData = ctx.getImageData(0, 0, size, size)
+    ctx.drawImage(image, 0, 0, size * text.length, size)
+    const imageData = ctx.getImageData(0, 0, size * text.length, size)
     const textPattern = converImageData(imageData, GREY_PALETTE)
     resolve({textPattern, svgNode})
   }
   image.src = base64  
 })
 
-export const getTextPatterns = async (textString, size, font) => {
+export const getTextPatterns = async (text, size, font) => {
   const patterns = []
-  //const fontData = await embedFont([font])
 
-  for(let i = 0; i < textString.length; i += 1){
-    const textPattern = await convertTextPattern(textString[i], size, font)
-    patterns.push(textPattern)    
-  }
+  const { textPattern, svgNode } = await convertTextPattern(text, size, font)
+  const rowLength = size * text.length
+
+  textPattern.forEach( (d, i) => {
+    const n = Math.floor((i % rowLength)/size)
+    if(!patterns[n]) patterns[n] = []
+    patterns[n].push(d)
+  })
 
   return patterns
 }
