@@ -249,8 +249,9 @@ const Painter = ({screen}) => {
   }
 
   const handleMouseTouchDown = (clientX, clientY) => {
+    const { x, y } = stretcherRef.current.getBoundingClientRect()
     setIsMouseDown(true)
-    handleStretcherPosiion(clientX, clientY)
+    handleStretcherPosiion(clientX - x, clientY - y)
   }
 
   const handleMouseTouchUp = () => {
