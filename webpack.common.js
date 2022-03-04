@@ -6,7 +6,7 @@ module.exports = (env, argv) => {
   return ({
     context: `${__dirname}/`,
     entry: {
-      web: './index.js',
+      web: './src/index.jsx',
     },
     output: {
       path: `${__dirname}/dist/`,
@@ -58,14 +58,17 @@ module.exports = (env, argv) => {
         },
         {
           test: /\.(eot|svg|ttf|woff|woff2)$/,
-          use: 'file-loader?name=public/fonts/[name].[ext]',
+          type: 'asset/resource',
+          generator: {
+            filename: 'public/fonts/[name].[ext]'
+          }
         },
         { test: /\.html$/, use: 'html-loader' },
       ],
     },
     plugins: [
       new HtmlWebpackPlugin({
-        template: `index.ejs`,
+        template: `src/index.ejs`,
       }),
       new MiniCssExtractPlugin(),
     ],

@@ -20,6 +20,9 @@ import { IconFont } from '../icons'
 
 import './index.styl'
 
+const ImageConverterRef = React.forwardRef((props, ref) => <ImageConverter {...props} forwardedRef={ref} />)
+const QrGeneratorRef = React.forwardRef((props, ref) => <QrGenerator {...props} forwardedRef={ref} />)
+
 const Editor = props => {
   const dispatch = useDispatch()
   const [imgConverterOpen, setImgConverterOpen] = useState(false)
@@ -70,7 +73,7 @@ const Editor = props => {
         className="editor__modal"
         keepMounted={true}
       >
-        <ImageConverter
+        <ImageConverterRef
           onClose={handleImgConverterClose}
         />
       </Modal>
@@ -80,7 +83,7 @@ const Editor = props => {
         className="editor__modal"
         keepMounted={true}
       >
-        <QrGenerator
+        <QrGeneratorRef
           onClose={handleQrGeneratorClose}
         />
       </Modal>

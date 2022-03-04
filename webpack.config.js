@@ -6,20 +6,6 @@ const htmlTemplate = new HtmlWebpackPlugin({
   template: `index.ejs`,
 })
 
-const optimization = {
-  splitChunks: {
-    cacheGroups: {
-      default: false,
-      vendors: {
-        name: 'vendor',
-        reuseExistingChunk: true,
-        test: /[\\/]node_modules[\\/]/,
-        chunks: 'all',
-      },
-    },
-  },
-}
-
 const devServer = {
   inline: true,
   https: false,
@@ -52,7 +38,7 @@ module.exports = (env, argv) => {
         {
           test: /\.js(x)?$/,
           exclude: /(node_modules)/,
-          loader: 'babel-loader',
+          use: 'babel-loader'
         },
         {
           test: /\.styl/,
@@ -64,7 +50,7 @@ module.exports = (env, argv) => {
         },
         {
           test: /\.(gif|png|jpe?g)$/i,
-          loaders: [
+          use: [
             {
               loader: 'file-loader',
               options: {
@@ -73,7 +59,7 @@ module.exports = (env, argv) => {
             },
             {
               loader: 'image-webpack-loader',
-              query: {
+              options: {
                 mozjpeg: {
                   progressive: true,
                 },
@@ -93,12 +79,11 @@ module.exports = (env, argv) => {
         },
         {
           test: /\.(eot|svg|ttf|woff|woff2)$/,
-          loader: 'file-loader?name=public/fonts/[name].[ext]',
+          use: 'file-loader?name=public/fonts/[name].[ext]',
         },
-        { test: /\.html$/, loader: 'html-loader' },
+        { test: /\.html$/, use: 'html-loader' },
       ],
     },
-    optimization,
     plugins: [
       htmlTemplate,
       new MiniCssExtractPlugin(),

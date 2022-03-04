@@ -18,10 +18,10 @@ import "regenerator-runtime/runtime"
 
 import './reset.css'
 
-import Editor from './src/components/editor'
+import Editor from './components/editor'
 
-import store from './src/store'
-import theme from './src/theme'
+import store from './store'
+import theme from './theme'
 
 const history = createHistory(window)
 

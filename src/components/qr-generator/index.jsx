@@ -39,7 +39,7 @@ const ZOOM = 4
 
 const QrCode = qrcodegen.QrCode
 
-const AuthorEditModal = ({ author, title, onClose}) => {
+const AuthorEditModal = React.forwardRef(({ author, title, onClose}, ref) => {
   const dispatch = useDispatch()
 
   const [inputTitle, setInputTitle] = useState('')
@@ -60,7 +60,7 @@ const AuthorEditModal = ({ author, title, onClose}) => {
   },[])
 
   return(
-    <div className="author-edit-modal">
+    <div className="author-edit-modal" ref={ref}>
       <TextField 
         label="標題"
         value={inputTitle}
@@ -83,7 +83,7 @@ const AuthorEditModal = ({ author, title, onClose}) => {
       </div>
     </div>
   )
-}
+})
 
 const QrGenerator = ({onClose}) => {
   const dispatch = useDispatch()

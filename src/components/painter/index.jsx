@@ -99,6 +99,8 @@ const canvasCtx = {
   preview: null,
 }
 
+const TextEditorRef = React.forwardRef((props, ref) => <TextEditor {...props} forwardedRef={ref} />)
+
 const Painter = ({screen}) => {
   const dispatch = useDispatch()
 
@@ -605,7 +607,7 @@ const Painter = ({screen}) => {
         className="editor__modal"
         keepMounted={true}
       >
-        <TextEditor
+        <TextEditorRef
           onClose={handleTextEditorClose}
         />
       </Modal>
