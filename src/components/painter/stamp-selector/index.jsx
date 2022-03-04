@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 
-import Button from '@material-ui/core/Button'
-import IconButton from '@material-ui/core/IconButton'
+import Button from '@mui/material/Button'
+import IconButton from '@mui/material/IconButton'
 
 import Selector from '../../selector'
 import IconLabel from '../icon-label'
@@ -40,13 +40,13 @@ const StampSelector = ({ selectedStamp, options, onSizeChange, onStampChange }) 
           <IconButton
             onClick={ () => handleSizeChange(size) }
             color={ size === selectedStamp.size ? 'primary' : 'default' }
-          >
+            size="large">
             <IconFont style={`${selectedStamp.type}-${size}`} />
           </IconButton>
         ))
       }
     </div>
-  )
+  );
 }
 
 StampSelector.propTypes = {}

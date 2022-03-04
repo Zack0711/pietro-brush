@@ -3,9 +3,9 @@ import { useSelector, useDispatch } from 'react-redux'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 
-import Button from '@material-ui/core/Button'
-import IconButton from '@material-ui/core/IconButton'
-import Modal from '@material-ui/core/Modal'
+import Button from '@mui/material/Button'
+import IconButton from '@mui/material/IconButton'
+import Modal from '@mui/material/Modal'
 
 import { IconFont } from '../icons'
 import Selector from '../selector'
@@ -515,15 +515,12 @@ const Painter = ({screen}) => {
                 key={d.val}
                 onClick={ () => setTool(d.val) }
                 color={ tool === d.val ? 'primary' : 'default' }
-              >
+                size="large">
                 <IconFont style={d.icon} />
               </IconButton>
             ))
           }
-          <IconButton
-            disabled={ step < 1 }
-            onClick={backToPreviousStorage}
-          >
+          <IconButton disabled={ step < 1 } onClick={backToPreviousStorage} size="large">
             <IconFont style="step-back" />
           </IconButton>
         </div>
@@ -581,9 +578,7 @@ const Painter = ({screen}) => {
             {
               tool === 'text' && (
                 <div className="painter__text-tool">
-                  <IconButton
-                    onClick={() => setTextEditorOpen(true)}
-                  >
+                  <IconButton onClick={() => setTextEditorOpen(true)} size="large">
                     <IconFont style="text-edit" />
                   </IconButton>
                   <div className="painter__text-patterns">
@@ -592,7 +587,7 @@ const Painter = ({screen}) => {
                         <IconButton
                           onClick={ () => setTextPatternIndex(i) }
                           color={ textPatternIndex === i ? 'primary' : 'default' }
-                        >
+                          size="large">
                           <TextPattern pattern={d} size={28} />
                         </IconButton>
                       ))                      
@@ -615,7 +610,7 @@ const Painter = ({screen}) => {
         />
       </Modal>
     </div>
-  )
+  );
 }
 
 Painter.propTypes = {}

@@ -3,9 +3,9 @@ import { useSelector, useDispatch } from 'react-redux'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 
-import Button from '@material-ui/core/Button'
-import TextField from '@material-ui/core/TextField'
-import Modal from '@material-ui/core/Modal'
+import Button from '@mui/material/Button'
+import TextField from '@mui/material/TextField'
+import Modal from '@mui/material/Modal'
 
 import { IconFont } from '../icons'
 
