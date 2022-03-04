@@ -29,13 +29,11 @@ module.exports = (env, argv) => {
         },
         {
           test: /\.(gif|png|jpe?g)$/i,
+          type: 'asset/resource',
+          generator: {
+            filename: '[path][name].[ext]'
+          },
           use: [
-            {
-              loader: 'file-loader',
-              options: {
-                name: '[path][name].[ext]',
-              },
-            },
             {
               loader: 'image-webpack-loader',
               options: {
