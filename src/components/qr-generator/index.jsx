@@ -3,9 +3,9 @@ import { useSelector, useDispatch } from 'react-redux'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 
-import Button from '@material-ui/core/Button'
-import TextField from '@material-ui/core/TextField'
-import Modal from '@material-ui/core/Modal'
+import Button from '@mui/material/Button'
+import TextField from '@mui/material/TextField'
+import Modal from '@mui/material/Modal'
 
 import { IconFont } from '../icons'
 
@@ -39,7 +39,7 @@ const ZOOM = 4
 
 const QrCode = qrcodegen.QrCode
 
-const AuthorEditModal = ({ author, title, onClose}) => {
+const AuthorEditModal = React.forwardRef(({ author, title, onClose}, ref) => {
   const dispatch = useDispatch()
 
   const [inputTitle, setInputTitle] = useState('')
@@ -60,7 +60,7 @@ const AuthorEditModal = ({ author, title, onClose}) => {
   },[])
 
   return(
-    <div className="author-edit-modal">
+    <div className="author-edit-modal" ref={ref}>
       <TextField 
         label="標題"
         value={inputTitle}
@@ -83,7 +83,7 @@ const AuthorEditModal = ({ author, title, onClose}) => {
       </div>
     </div>
   )
-}
+})
 
 const QrGenerator = ({onClose}) => {
   const dispatch = useDispatch()

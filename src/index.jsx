@@ -1,29 +1,20 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
-import { ThemeProvider } from '@material-ui/styles'
+import { ThemeProvider } from '@mui/material/styles'
 
 import * as Sentry from '@sentry/react';
 import { Integrations } from '@sentry/apm';
-
-import {
-  Router,
-  Redirect,
-  createHistory,
-  LocationProvider,
-} from '@reach/router'
 
 import "core-js/stable"
 import "regenerator-runtime/runtime"
 
 import './reset.css'
 
-import Editor from './src/components/editor'
+import Editor from './components/editor'
 
-import store from './src/store'
-import theme from './src/theme'
-
-const history = createHistory(window)
+import store from './store'
+import theme from './theme'
 
 Sentry.init({
   dsn: "https://d45502e3d91647baaf14421f64fc61f1@o437865.ingest.sentry.io/5400910",

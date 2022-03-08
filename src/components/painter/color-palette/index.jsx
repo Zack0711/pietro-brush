@@ -3,9 +3,9 @@ import { useSelector, useDispatch } from 'react-redux'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 
-import Button from '@material-ui/core/Button'
-import Menu from '@material-ui/core/Menu'
-import MenuItem from '@material-ui/core/MenuItem'
+import Button from '@mui/material/Button'
+import Menu from '@mui/material/Menu'
+import MenuItem from '@mui/material/MenuItem'
 
 import { IconFont } from '../../icons'
 

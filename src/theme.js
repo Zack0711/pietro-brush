@@ -1,6 +1,6 @@
-import { createMuiTheme } from '@material-ui/core/styles'
+import { createTheme } from '@mui/material/styles';
 
-const theme = createMuiTheme({
+const theme = createTheme({
   palette: {
     text: {
       primary: '#665042',
@@ -32,32 +32,34 @@ const theme = createMuiTheme({
       textTransform: 'none',
     },
   },
-})
-
-export default {
-  ...theme,
-  overrides: {
+  components: {
     MuiButton: {
-      root: {
-        lineHeight: 1,
-        minWidth: 24,
-        borderRadius: 0,
-      },
+      styleOverrides: {
+        root: {
+          lineHeight: 1,
+          minWidth: 24,
+          borderRadius: 0,
+        },        
+      }
     },
     MuiIconButton: {
-      root: {
-        padding: 6,
-      },
-      colorPrimary: {
-        color: '#f2f0d9',
-        backgroundColor: '#12c3b9',
-        '&:hover': {
+      styleOverrides: {
+        root: {
+          padding: 6,
+        },
+        colorPrimary: {
+          color: '#f2f0d9',
           backgroundColor: '#12c3b9',
-          '@media (hover: none)': {
+          '&:hover': {
             backgroundColor: '#12c3b9',
+            '@media (hover: none)': {
+              backgroundColor: '#12c3b9',
+            }
           }
-        }
+        }        
       }
     }
-  },
-}
+  }
+})
+
+export default theme

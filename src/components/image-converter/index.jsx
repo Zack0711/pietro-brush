@@ -6,14 +6,14 @@ import classNames from 'classnames'
 import 'cropperjs/dist/cropper.css'
 import Cropper from 'cropperjs'
 
-import Button from '@material-ui/core/Button'
-import IconButton from '@material-ui/core/IconButton'
+import Button from '@mui/material/Button'
+import IconButton from '@mui/material/IconButton'
 
-import Select from '@material-ui/core/Select'
-import MenuItem from '@material-ui/core/MenuItem'
-import InputLabel from '@material-ui/core/InputLabel'
-import FormControl from '@material-ui/core/FormControl'
-import CloseIcon from '@material-ui/icons/Close'
+import Select from '@mui/material/Select'
+import MenuItem from '@mui/material/MenuItem'
+import InputLabel from '@mui/material/InputLabel'
+import FormControl from '@mui/material/FormControl'
+import CloseIcon from '@mui/icons-material/Close'
 
 import { IconFont } from '../icons'
 
@@ -90,10 +90,10 @@ const ImageConverter = ({onClose}) => {
     <div className="image-converter">
       <div className="image-converter__header">
         匯入圖片進行裁切
-        <IconButton 
+        <IconButton
           className="image-converter__close-btn"
           onClick={() => onClose()}
-        >
+          size="large">
           <CloseIcon />
         </IconButton>
       </div>
@@ -140,7 +140,7 @@ const ImageConverter = ({onClose}) => {
         </Button>
       </div>
     </div>
-  )
+  );
 }
 
 ImageConverter.propTypes = {}

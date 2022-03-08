@@ -3,8 +3,8 @@ import { useSelector, useDispatch } from 'react-redux'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 
-import Button from '@material-ui/core/Button'
-import Modal from '@material-ui/core/Modal'
+import Button from '@mui/material/Button'
+import Modal from '@mui/material/Modal'
 
 import { updateImageState } from '../../actions/image'
 
@@ -19,6 +19,9 @@ import QrGenerator from '../qr-generator'
 import { IconFont } from '../icons'
 
 import './index.styl'
+
+const ImageConverterRef = React.forwardRef((props, ref) => <ImageConverter {...props} forwardedRef={ref} />)
+const QrGeneratorRef = React.forwardRef((props, ref) => <QrGenerator {...props} forwardedRef={ref} />)
 
 const Editor = props => {
   const dispatch = useDispatch()
@@ -70,7 +73,7 @@ const Editor = props => {
         className="editor__modal"
         keepMounted={true}
       >
-        <ImageConverter
+        <ImageConverterRef
           onClose={handleImgConverterClose}
         />
       </Modal>
@@ -80,7 +83,7 @@ const Editor = props => {
         className="editor__modal"
         keepMounted={true}
       >
-        <QrGenerator
+        <QrGeneratorRef
           onClose={handleQrGeneratorClose}
         />
       </Modal>

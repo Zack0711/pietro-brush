@@ -3,11 +3,11 @@ import { useSelector, useDispatch } from 'react-redux'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 
-import Button from '@material-ui/core/Button'
-import TextField from '@material-ui/core/TextField'
-import Select from '@material-ui/core/Select'
-import MenuItem from '@material-ui/core/MenuItem'
-import CircularProgress from '@material-ui/core/CircularProgress'
+import Button from '@mui/material/Button'
+import TextField from '@mui/material/TextField'
+import Select from '@mui/material/Select'
+import MenuItem from '@mui/material/MenuItem'
+import CircularProgress from '@mui/material/CircularProgress'
 
 import {
   updatePatterns,
