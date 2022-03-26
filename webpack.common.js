@@ -10,7 +10,7 @@ module.exports = (env, argv) => {
     },
     output: {
       path: `${__dirname}/dist/`,
-      filename: 'js/[name].js?[hash]',
+      filename: 'js/[name].js?[fullhash]',
     },
     module: {
       rules: [

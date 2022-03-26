@@ -495,6 +495,12 @@ const Painter = ({screen}) => {
     activeIndexRef.current = activeIndex
   }, [activeIndex, pattern])
 
+  useEffect(() => {
+    if (pixelsArray.length > 0) {
+      renderCanvas(pixelsArray, canvasCtx.pattern, false)      
+    }
+  }, [zoom])
+
   return (
     <div 
       className="painter" 
