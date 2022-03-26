@@ -1,0 +1,495 @@
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-family: inherit;
+  font-size: 100%;
+  vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+  display: block;
+}
+body {
+  line-height: 1;
+}
+ol, ul {
+  list-style: none;
+}
+blockquote, q {
+  quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+  content: '';
+  content: none;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+select, option, button {
+  font-family: inherit;  
+}
+
+body {
+  background: #f2f0d9;
+  color: #665042;
+  font-family: "Noto Sans", Roboto, Helvetica, Arial, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+@font-face {
+  font-family: 'font-hdzb';
+  src: url(public/fonts/zhuanti..woff) format('woff');
+}
+
+@font-face {
+  font-family: 'font-kouzansousho';
+  src: url(public/fonts/KouzanBrushFontSousyo..woff) format('woff');
+}
+
+@font-face {
+  font-family: 'font-aoyagireisho';
+  src: url(public/fonts/aoyagireisyosimo_ttf_2_01..woff) format('woff');
+}
+
+@font-face {
+  font-family: 'font-seto';
+  src: url(public/fonts/sp-setofont..woff) format('woff');
+}
+
+@font-face {
+  font-family: 'font-jf-openhuninn';
+  src: url(public/fonts/jf-openhuninn-11..woff) format('woff');
+}
+
+/*!
+ * Cropper.js v1.5.12
+ * https://fengyuanchen.github.io/cropperjs
+ *
+ * Copyright 2015-present Chen Fengyuan
+ * Released under the MIT license
+ *
+ * Date: 2021-06-12T08:00:11.623Z
+ */
+
+.cropper-container {
+  direction: ltr;
+  font-size: 0;
+  line-height: 0;
+  position: relative;
+  -ms-touch-action: none;
+  touch-action: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.cropper-container img {
+  display: block;
+  height: 100%;
+  image-orientation: 0deg;
+  max-height: none !important;
+  max-width: none !important;
+  min-height: 0 !important;
+  min-width: 0 !important;
+  width: 100%;
+}
+
+.cropper-wrap-box,
+.cropper-canvas,
+.cropper-drag-box,
+.cropper-crop-box,
+.cropper-modal {
+  bottom: 0;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.cropper-wrap-box,
+.cropper-canvas {
+  overflow: hidden;
+}
+
+.cropper-drag-box {
+  background-color: #fff;
+  opacity: 0;
+}
+
+.cropper-modal {
+  background-color: #000;
+  opacity: 0.5;
+}
+
+.cropper-view-box {
+  display: block;
+  height: 100%;
+  outline: 1px solid #39f;
+  outline-color: rgba(51, 153, 255, 0.75);
+  overflow: hidden;
+  width: 100%;
+}
+
+.cropper-dashed {
+  border: 0 dashed #eee;
+  display: block;
+  opacity: 0.5;
+  position: absolute;
+}
+
+.cropper-dashed.dashed-h {
+  border-bottom-width: 1px;
+  border-top-width: 1px;
+  height: calc(100% / 3);
+  left: 0;
+  top: calc(100% / 3);
+  width: 100%;
+}
+
+.cropper-dashed.dashed-v {
+  border-left-width: 1px;
+  border-right-width: 1px;
+  height: 100%;
+  left: calc(100% / 3);
+  top: 0;
+  width: calc(100% / 3);
+}
+
+.cropper-center {
+  display: block;
+  height: 0;
+  left: 50%;
+  opacity: 0.75;
+  position: absolute;
+  top: 50%;
+  width: 0;
+}
+
+.cropper-center::before,
+.cropper-center::after {
+  background-color: #eee;
+  content: ' ';
+  display: block;
+  position: absolute;
+}
+
+.cropper-center::before {
+  height: 1px;
+  left: -3px;
+  top: 0;
+  width: 7px;
+}
+
+.cropper-center::after {
+  height: 7px;
+  left: 0;
+  top: -3px;
+  width: 1px;
+}
+
+.cropper-face,
+.cropper-line,
+.cropper-point {
+  display: block;
+  height: 100%;
+  opacity: 0.1;
+  position: absolute;
+  width: 100%;
+}
+
+.cropper-face {
+  background-color: #fff;
+  left: 0;
+  top: 0;
+}
+
+.cropper-line {
+  background-color: #39f;
+}
+
+.cropper-line.line-e {
+  cursor: ew-resize;
+  right: -3px;
+  top: 0;
+  width: 5px;
+}
+
+.cropper-line.line-n {
+  cursor: ns-resize;
+  height: 5px;
+  left: 0;
+  top: -3px;
+}
+
+.cropper-line.line-w {
+  cursor: ew-resize;
+  left: -3px;
+  top: 0;
+  width: 5px;
+}
+
+.cropper-line.line-s {
+  bottom: -3px;
+  cursor: ns-resize;
+  height: 5px;
+  left: 0;
+}
+
+.cropper-point {
+  background-color: #39f;
+  height: 5px;
+  opacity: 0.75;
+  width: 5px;
+}
+
+.cropper-point.point-e {
+  cursor: ew-resize;
+  margin-top: -3px;
+  right: -3px;
+  top: 50%;
+}
+
+.cropper-point.point-n {
+  cursor: ns-resize;
+  left: 50%;
+  margin-left: -3px;
+  top: -3px;
+}
+
+.cropper-point.point-w {
+  cursor: ew-resize;
+  left: -3px;
+  margin-top: -3px;
+  top: 50%;
+}
+
+.cropper-point.point-s {
+  bottom: -3px;
+  cursor: s-resize;
+  left: 50%;
+  margin-left: -3px;
+}
+
+.cropper-point.point-ne {
+  cursor: nesw-resize;
+  right: -3px;
+  top: -3px;
+}
+
+.cropper-point.point-nw {
+  cursor: nwse-resize;
+  left: -3px;
+  top: -3px;
+}
+
+.cropper-point.point-sw {
+  bottom: -3px;
+  cursor: nesw-resize;
+  left: -3px;
+}
+
+.cropper-point.point-se {
+  bottom: -3px;
+  cursor: nwse-resize;
+  height: 20px;
+  opacity: 1;
+  right: -3px;
+  width: 20px;
+}
+
+@media (min-width: 768px) {
+  .cropper-point.point-se {
+    height: 15px;
+    width: 15px;
+  }
+}
+
+@media (min-width: 992px) {
+  .cropper-point.point-se {
+    height: 10px;
+    width: 10px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .cropper-point.point-se {
+    height: 5px;
+    opacity: 0.75;
+    width: 5px;
+  }
+}
+
+.cropper-point.point-se::before {
+  background-color: #39f;
+  bottom: -50%;
+  content: ' ';
+  display: block;
+  height: 200%;
+  opacity: 0;
+  position: absolute;
+  right: -50%;
+  width: 200%;
+}
+
+.cropper-invisible {
+  opacity: 0;
+}
+
+.cropper-bg {
+  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQAQMAAAAlPW0iAAAAA3NCSVQICAjb4U/gAAAABlBMVEXMzMz////TjRV2AAAACXBIWXMAAArrAAAK6wGCiw1aAAAAHHRFWHRTb2Z0d2FyZQBBZG9iZSBGaXJld29ya3MgQ1M26LyyjAAAABFJREFUCJlj+M/AgBVhF/0PAH6/D/HkDxOGAAAAAElFTkSuQmCC);
+}
+
+.cropper-hide {
+  display: block;
+  height: 0;
+  position: absolute;
+  width: 0;
+}
+
+.cropper-hidden {
+  display: none !important;
+}
+
+.cropper-move {
+  cursor: move;
+}
+
+.cropper-crop {
+  cursor: crosshair;
+}
+
+.cropper-disabled .cropper-drag-box,
+.cropper-disabled .cropper-face,
+.cropper-disabled .cropper-line,
+.cropper-disabled .cropper-point {
+  cursor: not-allowed;
+}
+
+::-webkit-scrollbar{width:4px;height:4px}::-webkit-scrollbar-track{background:#fff}::-webkit-scrollbar-thumb{background:#d8d8d8}::-webkit-scrollbar-thumb:hover{background:rgba(18,19,35,0.3)}
+@font-face {
+  font-family: 'fontello';
+  src: url(public/fonts/fontello..eot);
+  src: url(public/fonts/fontello..eot#iefix) format('embedded-opentype'),
+       url(public/fonts/fontello..woff2) format('woff2'),
+       url(public/fonts/fontello..woff) format('woff'),
+       url(public/fonts/fontello..ttf) format('truetype'),
+       url(public/fonts/fontello..svg#fontello) format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+/* Chrome hack: SVG is rendered more smooth in Windozze. 100% magic, uncomment if you need it. */
+/* Note, that will break hinting! In other OS-es font will be not as sharp as it could be */
+/*
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  @font-face {
+    font-family: 'fontello';
+    src: url('../font/fontello.svg?84306799#fontello') format('svg');
+  }
+}
+*/
+ 
+ [class^="icon-"]:before, [class*=" icon-"]:before {
+  font-family: "fontello";
+  font-style: normal;
+  font-weight: normal;
+  speak: never;
+ 
+  display: inline-block;
+  text-decoration: inherit;
+  width: 1em;
+  text-align: center;
+  /* opacity: .8; */
+ 
+  /* For safety - reset parent styles, that can break glyph codes*/
+  font-variant: normal;
+  text-transform: none;
+ 
+  /* fix buttons height, for twitter bootstrap */
+  line-height: 1em;
+ 
+  /* Animation center compensation - margins should be symmetric */
+  /* remove if not needed */
+ 
+  /* you can be more comfortable with increased icons size */
+  /* font-size: 120%; */
+ 
+  /* Font smoothing. That was taken from TWBS */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+ 
+  /* Uncomment for 3D effect */
+  /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
+}
+ 
+.icon-qrcode:before { content: '\e800'; } /* '' */
+.icon-pen:before { content: '\e801'; } /* '' */
+.icon-move:before { content: '\e802'; } /* '' */
+.icon-folder:before { content: '\e803'; } /* '' */
+.icon-picture:before { content: '\e804'; } /* '' */
+.icon-archive:before { content: '\e805'; } /* '' */
+.icon-crop:before { content: '\e806'; } /* '' */
+.icon-previous:before { content: '\e807'; } /* '' */
+.icon-text-tool:before { content: '\e808'; } /* '' */
+.icon-edit-text:before { content: '\e809'; } /* '' */
+.icon-palette:before { content: '\e81a'; } /* '' */
+.icon-bucket:before { content: '\e81b'; } /* '' */
+.icon-bucket-all:before { content: '\e81c'; } /* '' */
+.icon-mirror-horizontal:before { content: '\e81d'; } /* '' */
+.icon-mirror-vertical:before { content: '\e81e'; } /* '' */
+.icon-mirror-corner:before { content: '\e81f'; } /* '' */
+.icon-heart-l:before { content: '\e820'; } /* '' */
+.icon-heart-m:before { content: '\e821'; } /* '' */
+.icon-heart-s:before { content: '\e822'; } /* '' */
+.icon-rect:before { content: '\e823'; } /* '' */
+.icon-ellipse:before { content: '\e824'; } /* '' */
+.icon-line:before { content: '\e825'; } /* '' */
+.icon-stamp:before { content: '\e826'; } /* '' */
+.icon-star-l:before { content: '\e827'; } /* '' */
+.icon-star-m:before { content: '\e828'; } /* '' */
+.icon-star-s:before { content: '\e829'; } /* '' */
+.icon-pigment:before { content: '\e82a'; } /* '' */
+.icon-mirror-no:before { content: '\e82b'; } /* '' */
+.icon-convert-img:before { content: '\e82c'; } /* '' */
+.icon-github:before { content: '\f056'; } /* '' */
+::-webkit-scrollbar{width:4px;height:4px}::-webkit-scrollbar-track{background:#fff}::-webkit-scrollbar-thumb{background:#d8d8d8}::-webkit-scrollbar-thumb:hover{background:rgba(18,19,35,0.3)}.image-converter{width:100vw;height:80%;max-width:768px;position:relative;background:#fff}.image-converter__header{height:48px;padding:0 48px;position:relative;display:flex;flex-direction:row;justify-content:center;align-items:center}.image-converter__close-btn{position:absolute !important;top:0;right:0}.image-converter__preview{width:100%;height:calc(100% - 96px);display:flex;flex-direction:row;justify-content:center;align-items:center}.image-converter__input-img{max-width:100%}.image-converter__tool{height:48px;display:flex;flex-direction:row;justify-content:center;align-items:center}.image-converter__select-wrap{display:flex;flex-direction:row;justify-content:center;align-items:center;width:64px}.image-converter__select-input{display:none}.image-converter__crop-count{display:flex;flex-direction:row;justify-content:center;align-items:center;background:#f2f0d9;border-radius:4px;padding:4px 8px}
+::-webkit-scrollbar{width:4px;height:4px}::-webkit-scrollbar-track{background:#fff}::-webkit-scrollbar-thumb{background:#d8d8d8}::-webkit-scrollbar-thumb:hover{background:rgba(18,19,35,0.3)}.block{border:1px solid #808080;background-image:url(src/components/previewer/block/trans-pattern-s..jpg);display:flex;flex-direction:row;justify-content:center;align-items:center}.block--active{border:1px solid #e5aa9c}
+::-webkit-scrollbar{width:4px;height:4px}::-webkit-scrollbar-track{background:#fff}::-webkit-scrollbar-thumb{background:#d8d8d8}::-webkit-scrollbar-thumb:hover{background:rgba(18,19,35,0.3)}.previewer{width:144px;height:144px;background:#847562;display:flex;flex-direction:column;justify-content:center;align-items:center}.previewer__block--wrap{flex-wrap:wrap;display:flex;flex-direction:row;justify-content:center;align-items:center}
+::-webkit-scrollbar{width:4px;height:4px}::-webkit-scrollbar-track{background:#fff}::-webkit-scrollbar-thumb{background:#d8d8d8}::-webkit-scrollbar-thumb:hover{background:rgba(18,19,35,0.3)}
+::-webkit-scrollbar{width:4px;height:4px}::-webkit-scrollbar-track{background:#fff}::-webkit-scrollbar-thumb{background:#d8d8d8}::-webkit-scrollbar-thumb:hover{background:rgba(18,19,35,0.3)}.pattern{position:relative;display:flex}.pattern__preview{position:absolute;top:0;left:0}.pattern__preview--hide{opacity:0}
+::-webkit-scrollbar{width:4px;height:4px}::-webkit-scrollbar-track{background:#fff}::-webkit-scrollbar-thumb{background:#d8d8d8}::-webkit-scrollbar-thumb:hover{background:rgba(18,19,35,0.3)}.color-palette__wrap{width:300px;flex-wrap:wrap;display:flex;flex-direction:row;justify-content:center;align-items:center}.color-palette__grey{flex-basis:100%;display:flex;flex-direction:row;justify-content:center;align-items:center}.color-palette__color-block{cursor:pointer;border:1px solid transparent;width:16px;height:16px;margin:1px}.color-palette__color-block--active{border-color:#666}
+::-webkit-scrollbar{width:4px;height:4px}::-webkit-scrollbar-track{background:#fff}::-webkit-scrollbar-thumb{background:#d8d8d8}::-webkit-scrollbar-thumb:hover{background:rgba(18,19,35,0.3)}.palette{padding:4px 0;flex-wrap:wrap;display:flex;flex-direction:row;justify-content:center;align-items:center}.palette__color-wrap{flex-basis:270px;flex-wrap:wrap;display:flex;flex-direction:row;justify-content:center;align-items:center}.palette__color-block{cursor:pointer;border:1px solid transparent;width:16px;height:32px;background:url(src/components/painter/palette/trans-pattern-s..jpg)}.palette__color-block--active{border-color:#666}
+::-webkit-scrollbar{width:4px;height:4px}::-webkit-scrollbar-track{background:#fff}::-webkit-scrollbar-thumb{background:#d8d8d8}::-webkit-scrollbar-thumb:hover{background:rgba(18,19,35,0.3)}.icon-label{display:flex;flex-direction:row;justify-content:center;align-items:center}.icon-label__label{margin-left:8px}
+::-webkit-scrollbar{width:4px;height:4px}::-webkit-scrollbar-track{background:#fff}::-webkit-scrollbar-thumb{background:#d8d8d8}::-webkit-scrollbar-thumb:hover{background:rgba(18,19,35,0.3)}.stamp-selector{display:flex;flex-direction:row;justify-content:center;align-items:center}
+::-webkit-scrollbar{width:4px;height:4px}::-webkit-scrollbar-track{background:#fff}::-webkit-scrollbar-thumb{background:#d8d8d8}::-webkit-scrollbar-thumb:hover{background:rgba(18,19,35,0.3)}.text-pattern{display:flex;flex-direction:row;justify-content:center;align-items:center}
+::-webkit-scrollbar{width:4px;height:4px}::-webkit-scrollbar-track{background:#fff}::-webkit-scrollbar-thumb{background:#d8d8d8}::-webkit-scrollbar-thumb:hover{background:rgba(18,19,35,0.3)}.text-editor{width:60%;height:80%;min-width:320px;max-width:540px;position:relative;background:#f2f0d9;display:flex;flex-direction:column;justify-content:center;align-items:center}.text-editor--converting:after{content:'';display:block;width:100%;height:100%;background:#fff;opacity:.8;position:absolute;top:0;left:0;z-index:5}.text-editor__setting-wrap{margin:8px auto}.text-editor__pattern-wrap{display:flex;flex-direction:row;justify-content:flex-start;align-items:center;margin:8px auto;width:170px;flex-wrap:wrap}.text-editor__pattern{border:1px solid #fdc0c7}.text-editor__loader{position:absolute;z-index:10;top:calc(50% - 20px);left:calc(50% - 20px)}.text-editor__tool-wrap{margin:8px 0}
+::-webkit-scrollbar{width:4px;height:4px}::-webkit-scrollbar-track{background:#fff}::-webkit-scrollbar-thumb{background:#d8d8d8}::-webkit-scrollbar-thumb:hover{background:rgba(18,19,35,0.3)}.painter{flex-wrap:wrap;display:flex;flex-direction:row;justify-content:center;align-items:center}.painter__stretcher-wrap{display:flex;flex-direction:row;justify-content:center;align-items:center}.painter__stretcher{position:relative;border:1px solid #808080;overflow:hidden;background-image:url(src/components/painter/trans-pattern-s..jpg)}.painter__indicator{position:absolute;width:16px;height:16px;background:url(src/components/painter/trans-pattern-s..jpg);border:1px solid #666;transform:translate(-1px,-1px)}.painter__tool{flex-wrap:wrap;flex-basis:48px;display:flex;flex-direction:row;justify-content:center;align-items:center}.painter__sub-tool{padding:4px;height:48px;position:relative;background:#fdc0c7;flex-basis:100%;display:flex;flex-direction:row;justify-content:center;align-items:center}.painter__palette-wrap{flex-basis:100%}.painter__text-tool{display:flex;flex-direction:row;justify-content:center;align-items:center}.painter__text-patterns{width:214px;margin:0 0 0 8px;overflow-x:auto;overflow-y:hidden;background:#fff;display:flex;flex-direction:row;justify-content:flex-start;align-items:center}
+::-webkit-scrollbar{width:4px;height:4px}::-webkit-scrollbar-track{background:#fff}::-webkit-scrollbar-thumb{background:#d8d8d8}::-webkit-scrollbar-thumb:hover{background:rgba(18,19,35,0.3)}.qr-generator{width:60%;height:80%;min-width:320px;max-width:540px;position:relative;background:#f2f0d9;display:flex;flex-direction:column;justify-content:center;align-items:center}.qr-generator__author-information{margin:8px 0 16px;position:relative;text-align:center;padding:0 48px}.qr-generator__author-edit-btn{position:absolute !important;top:0;right:0}.qr-generator__author-name{color:#887966;font-size:14px}.qr-generator__block{border:1px solid #808080;display:flex;flex-direction:row;justify-content:center;align-items:center;background-image:url(src/components/qr-generator/trans-pattern-s..jpg)}.qr-generator__qr-code{margin:8px 0}.qr-generator__modal{display:flex;flex-direction:row;justify-content:center;align-items:center}.author-edit-modal{background:#fff;padding:16px;display:flex;flex-direction:column;justify-content:center;align-items:center}.author-edit-modal__input{margin:4px 0}.author-edit-modal__tool{margin:8px 0}
+::-webkit-scrollbar{width:4px;height:4px}::-webkit-scrollbar-track{background:#fff}::-webkit-scrollbar-thumb{background:#d8d8d8}::-webkit-scrollbar-thumb:hover{background:rgba(18,19,35,0.3)}.editor{width:100vw;height:100vh;flex-wrap:wrap;display:flex;flex-direction:row;justify-content:center;align-items:center}.editor__wrap{max-width:768px}.editor__aside{margin:8px 0 0 0;display:flex;flex-direction:row;justify-content:center;align-items:center}.editor__aside--tool{display:flex;flex-direction:column;justify-content:center;align-items:center}.editor__modal{display:flex;flex-direction:row;justify-content:center;align-items:center}
+
+/*# sourceMappingURL=web.css.map*/
