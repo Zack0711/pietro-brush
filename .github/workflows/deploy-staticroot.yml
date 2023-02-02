@@ -9,16 +9,12 @@ jobs:
     name: Deploy
     runs-on: ubuntu-latest
 
-    permissions:
-      contents: 'read'
-      id-token: 'write'
-
     steps:
       # actions/checkout MUST come before auth
       - uses: 'actions/checkout@v3'
       - id: 'auth'
         name: 'Authenticate to Google Cloud'
-        uses: google-github-actions/auth@v0.4.0
+        uses: google-github-actions/auth@v1
         with:
           credentials_json: ${{ secrets.GCP_STATIC_ROOT_CREDENTIALS }}
 
