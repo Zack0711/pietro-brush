@@ -1,0 +1,35 @@
+name: Deploy static-root
+on:
+  push:
+    paths:
+      - .github/workflows/deploy-staticroot.yml
+  workflow_dispatch:
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
+    steps:
+      # actions/checkout MUST come before auth
+      - uses: 'actions/checkout@v3'
+      - id: 'auth'
+        name: 'Authenticate to Google Cloud'
+        uses: google-github-actions/auth@v0.4.0
+        with:
+          credentials_json: ${{ secrets.GCP_STATIC_ROOT_CREDENTIALS }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v1
+
+      - name: Use Node.js 18.12
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.12
+
+      - name: Deploy static-root
+        run: yarn deploy
+        working-directory: ./
