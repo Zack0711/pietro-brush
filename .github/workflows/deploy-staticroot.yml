@@ -1,31 +1,21 @@
-name: Deploy static-root
+name: Add tag
 on:
-  push:
-    paths:
-      - .github/workflows/deploy-staticroot.yml
   workflow_dispatch:
+    inputs:
+      tag:
+        description: 'New tag name'
+        required: true
+
 jobs:
-  deploy:
-    name: Deploy
+  tag:
     runs-on: ubuntu-latest
-
+    permissions:
+      contents: 'read'
+      id-token: 'write'
     steps:
-      # actions/checkout MUST come before auth
-      - uses: 'actions/checkout@v3'
-      - id: 'auth'
-        name: 'Authenticate to Google Cloud'
-        uses: google-github-actions/auth@v1
+      - uses: actions/checkout@v3
         with:
-          credentials_json: ${{ secrets.GCP_STATIC_ROOT_CREDENTIALS }}
-
-      - name: Set up Cloud SDK
-        uses: google-github-actions/setup-gcloud@v1
-
-      - name: Use Node.js 18.12
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18.12
-
-      - name: Deploy static-root
-        run: yarn deploy
-        working-directory: ./
+          fetch-depth: 0
+      - run: git tag ${{ github.event.inputs.tag }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
